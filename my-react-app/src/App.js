@@ -6,7 +6,7 @@ import RightBar from './RightBar'
 
 function App() {
   return (
-    <div className="bg-gray-950 w-screen h-screen flex p-6 justify-around">
+    <div className="bg-black1 w-screen h-screen flex p-6 justify-around">
       <LeftBar></LeftBar>
       <Post></Post>
       <RightBar></RightBar>
