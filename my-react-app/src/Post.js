@@ -23,16 +23,15 @@ const Post = () => {
                     <div className='mr-2'>182</div>
                     <img src={upArrow} className='w-5'></img>
                 </div>
-                <div className='w-3/12 flex justify-end'>
-                    <div className='w-5/12 bg-gray-800 flex items-center px-2 py-2 rounded-xl mr-4'>
+                <div className='flex justify-end'>
+                    <div className='w-20 bg-gray-800 flex items- justify-around px-2 py-2 rounded-xl mr-4'>
                         <img src={comment} className='w-6 mr-2'></img>
                         <div>12</div>
                     </div>   
-                    <div className='w-3/12 bg-gray-800 flex items-center px-2 py-2 rounded-xl'>
+                    <div className='w-10 bg-gray-800 flex items-center px-2 py-2 rounded-xl'>
                         <img src={share} className='w-6 mr-2'></img>
                     </div>    
                 </div>
-
             </div>
         </div>
     )
