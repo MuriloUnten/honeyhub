@@ -1,8 +1,10 @@
 import Feed from "./screens/Feed";  
+import SingUp from "./screens/SignUp";
 
 function App() {
   return (
-    <Feed></Feed>
+    <SingUp></SingUp>
+    //<Feed></Feed>
   );
 }
 
