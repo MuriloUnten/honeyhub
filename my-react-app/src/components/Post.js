@@ -1,8 +1,8 @@
-import profile from './assets/profile.png'
-import beach from './assets/beach.jpg'
-import upArrow from './assets/upArrow.png'
-import comment from './assets/comment.png'
-import share from './assets/share.png'
+import profile from '../assets/profile.png'
+import beach from '../assets/beach.jpg'
+import upArrow from '../assets/upArrow.png'
+import comment from '../assets/comment.png'
+import share from '../assets/share.png'
 
 const Post = () => {
     return (
