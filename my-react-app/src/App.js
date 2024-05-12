@@ -1,10 +1,12 @@
 import Feed from "./screens/Feed";  
 import SingUp from "./screens/SignUp";
+import LogIn from "./screens/LogIn";
 
 function App() {
   return (
-    <SingUp></SingUp>
-    //<Feed></Feed>
+    <LogIn></LogIn>
+    // <SingUp></SingUp>
+    // <Feed></Feed>
   );
 }
 

@@ -1,4 +1,4 @@
-const LoginForm = () => {
+const SingUpForm = () => {
     return (
         <div className="m-auto">
             <form>
@@ -20,7 +20,7 @@ const LoginForm = () => {
                     <button type="submit" className="bg-main text-lg w-full h-11 rounded-3xl mb-2">Sign Up</button>
                     <div className="flex">
                         <div className="flex text-white m-auto">
-                            <div className="w-auto mr-1">Already have an account?</div><div className="text-main mr-2">Sign up</div>
+                            <div className="w-auto mr-1">Already have an account?</div><div className="text-main mr-2">Log in</div>
                         </div>
                     </div>
                     </div>
@@ -30,4 +30,4 @@ const LoginForm = () => {
 }
 
 //<div className="bg-black2 text-black3 h-11 flex items-center rounded-xl">{placeHolder}</div>
-export default LoginForm;
+export default SingUpForm;
