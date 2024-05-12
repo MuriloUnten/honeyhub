@@ -5,10 +5,10 @@ import CreatePost from "./screens/CreatePost";
 
 function App() {
   return (
-    <CreatePost></CreatePost>
+    // <CreatePost></CreatePost>
     // <LogIn></LogIn>
     // <SingUp></SingUp>
-    // <Feed></Feed>
+    <Feed></Feed>
   );
 }
 
