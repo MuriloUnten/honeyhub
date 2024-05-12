@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom"
+
 const LogInForm = () => {
     return (
         <div className="m-auto">
@@ -16,7 +18,8 @@ const LogInForm = () => {
                     <button type="submit" className="bg-main text-lg w-full h-11 rounded-3xl mb-2">Log In</button>
                     <div className="flex">
                         <div className="flex text-white m-auto">
-                            <div className="w-auto mr-1">Don’t have an account yet?</div><div className="text-main mr-2">Sign up</div>
+                            <div className="w-auto mr-1">Don’t have an account yet?</div>
+                            <div className="text-main mr-2"><Link to={`/signup`}> Sign up </Link></div>
                         </div>
                     </div>
                     </div>
