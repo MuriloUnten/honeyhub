@@ -1,4 +1,5 @@
 import Post from '../components/Post'
+import {PostsSection} from '../components/PostsSection'
 import LeftBar from '../components/LeftBar'
 import RightBar from '../components/RightBar'
 import CreateNewPost from '../components/CreateNewPost';
@@ -9,8 +10,7 @@ function Feed() {
       <LeftBar></LeftBar>
       <div className='w-6/12 rounded-3xl'>
         <CreateNewPost></CreateNewPost>
-        <Post></Post>
-        <Post></Post>
+        <PostsSection />
       </div>
       <RightBar></RightBar>
     </div>
