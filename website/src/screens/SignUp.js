@@ -1,5 +1,6 @@
 import beeHive from '../assets/beeHiveSingUp.png' 
 import SignUpForm from '../components/SignUpForm';
+import {redirect} from "react-router-dom"
 
 const SingUp = () => {
     return (
@@ -13,3 +14,15 @@ const SingUp = () => {
 }
 
 export default SingUp;
+
+export const signUpAction = async ({request}) => {
+    const data = await request.formData()
+    const submission = {
+        email: data.get("email"),
+        username: data.get("username"),
+        password: data.get("password") // TODO Fix me (Terporary abomination)
+    }
+
+    console.log(submission)
+    return redirect("/feed")
+}
