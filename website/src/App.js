@@ -4,6 +4,7 @@ import Feed from "./screens/Feed";
 import SignUp, {signUpAction} from "./screens/SignUp";
 import LogIn, {logInAction} from "./screens/LogIn";
 import CreatePost from "./screens/CreatePost";
+import { Community } from "./screens/Community"
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -13,6 +14,7 @@ const router = createBrowserRouter(
         <Route path="/login" element={<LogIn />} action={logInAction} /> 
         <Route path="/signup" element={<SignUp />} action={signUpAction} />
         <Route path="/create-post" element={<CreatePost />} /> 
+        <Route path="/community" element={<Community />} />
         </>
     )
 );
