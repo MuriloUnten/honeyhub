@@ -1,32 +1,21 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { createBrowserRouter, RouterProvider, createRoutesFromElements, Route} from "react-router-dom"
 
 import Feed from "./screens/Feed";  
 import SignUp from "./screens/SignUp";
-import LogIn from "./screens/LogIn";
+import LogIn, {logInAction} from "./screens/LogIn";
 import CreatePost from "./screens/CreatePost";
 
-const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Feed />
-    },
-    {
-        path: "/feed",
-        element: <Feed />
-    },
-    {
-        path: "/login",
-        element: <LogIn />
-    },
-    {
-        path: "/signup",
-        element: <SignUp />
-    },
-    {
-        path: "/create-post",
-        element: <CreatePost />
-    },
-]);
+const router = createBrowserRouter(
+    createRoutesFromElements(
+        <>
+        <Route path="/" element={<Feed />} /> 
+        <Route path="feed" element={<Feed />} />
+        <Route path="login" element={<LogIn />} action={logInAction} /> 
+        <Route path="signup" element=<SignUp /> />
+        <Route path="create-post" element=<CreatePost /> /> 
+        </>
+    )
+);
 
 function App() {
     return (
