@@ -4,6 +4,7 @@ import Feed from "./screens/Feed";
 import SignUp, {signUpAction} from "./screens/SignUp";
 import LogIn, {logInAction} from "./screens/LogIn";
 import CreatePost from "./screens/CreatePost";
+import Profile from "./screens/Profile";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -12,7 +13,8 @@ const router = createBrowserRouter(
         <Route path="/feed" element={<Feed />} />
         <Route path="/login" element={<LogIn />} action={logInAction} /> 
         <Route path="/signup" element={<SignUp />} action={signUpAction} />
-        <Route path="/create-post" element={<CreatePost />} /> 
+        <Route path="/create-post" element={<CreatePost />} />
+        <Route path="/profile" element={<Profile />} />
         </>
     )
 );
