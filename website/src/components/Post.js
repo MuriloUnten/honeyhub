@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom"
 import profile from '../assets/profile.png'
 import beach from '../assets/beach.jpg'
 import upArrow from '../assets/upArrow.png'
@@ -7,13 +8,18 @@ import share from '../assets/share.png'
 const Post = () => {
     return (
         //<div className='w-full h-96 bg-black2 rounded-3xl text-white px-8 py-2'>
+        <Link to='/view-post'>
         <div className='w-full h-96 bg-black2 rounded-3xl px-8 py-2 mb-4'>
-            <div className='w-full flex my-2 items-center mb-2'>
-                <img src={profile} className='w-8 h-8 mr-2'></img>
-                <div className='w-4/12 h-full text-gray text-sm'>Murilo Kenji</div>
+            <div>
+                <Link to='/profile' className='w-full flex my-2 items-center mb-2'>
+                    <img src={profile} className='w-8 h-8 mr-2'></img>
+                    <div className='w-4/12 h-full text-gray text-sm'>Murilo Kenji</div>
+                </Link>
             </div>
             <div className='font-bold text-2xl text-white h-10 mb-1'>
+                <Link to='/view-post'> 
                 This is the post title
+                </Link>
             </div>
             <div className='h-56'>
                 <img src={beach} className='max-h-52'></img>
@@ -35,7 +41,7 @@ const Post = () => {
                 </div>
             </div>
         </div>
-        //</div>
+        </Link>
     )
 };
 
