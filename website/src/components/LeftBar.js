@@ -29,7 +29,7 @@ const LeftBar = () => {
         to="/login"
         className="ml-4 bg-main font-bold text-lg w-60 h-10 rounded-3xl absolute bottom-0 mb-2 flex items-center justify-center"
       >
-        Logout
+        Log Out
       </Link>
     </div>
   );

@@ -6,6 +6,7 @@ import LogIn, {logInAction} from "./screens/LogIn";
 import CreatePost from "./screens/CreatePost";
 import { Community } from "./screens/Community"
 import Profile from "./screens/Profile";
+import ViewPost from "./screens/ViewPost";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -18,6 +19,7 @@ const router = createBrowserRouter(
         <Route path="/community" element={<Community />} />
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/view-post" element={<ViewPost />} />
         </>
     )
 );

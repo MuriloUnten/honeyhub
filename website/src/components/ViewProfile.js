@@ -7,23 +7,23 @@ const ViewProfile = () => {
         <img src={profile} className="max-h-40"></img>
       </div>
       <div className="ml-4">
-        <div className="font-bold text-3xl text-white mb-1">username_</div>
+        <div className="font-bold text-3xl text-white mb-1">username</div>
       </div>
       <div className="mt-10">
         <ul className="flex justify-between space-x-4">
-          <li className="font-bold text-2xl text-white hover:underline cursor-pointer">
+          <li className="font-bold text-2xl text-white hover:underline cursor-pointer hover:text-main">
             Overview
           </li>
-          <li className="font-bold text-2xl text-white hover:underline cursor-pointer">
+          <li className="font-bold text-2xl text-white hover:underline cursor-pointer hover:text-main">
             Posts
           </li>
-          <li className="font-bold text-2xl text-white hover:underline cursor-pointer ">
+          <li className="font-bold text-2xl text-white hover:underline cursor-pointer hover:text-main">
             Comments
           </li>
-          <li className="font-bold text-2xl text-white hover:underline cursor-pointer ">
+          <li className="font-bold text-2xl text-white hover:underline cursor-pointer hover:text-main">
             Upvoted
           </li>
-          <li className="font-bold text-2xl text-white hover:underline cursor-pointer ">
+          <li className="font-bold text-2xl text-white hover:underline cursor-pointer hover:text-main">
             Downvoted
           </li>
         </ul>
