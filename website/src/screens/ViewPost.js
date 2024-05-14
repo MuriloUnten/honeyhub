@@ -1,8 +1,8 @@
 import LeftBar from "../components/LeftBar";
 import RightBar from "../components/RightBar";
 import Comments from "../components/Comments";
-import profile from "../assets/profile.png";
 import VisualizePost from "../components/VisualizePost";
+import CreateCommentForm from "../components/CreateCommentForm";
 
 const ViewPost = () => {
   return (
@@ -10,6 +10,7 @@ const ViewPost = () => {
       <LeftBar></LeftBar>
       <div className="w-6/12 rounded-3xl">
         <VisualizePost></VisualizePost>
+        <CreateCommentForm></CreateCommentForm>
         <Comments></Comments>
       </div>
       <RightBar></RightBar>
