@@ -14,7 +14,7 @@ const VisualizePost = () => {
         <Link to="/profile"><img src={profile} className="max-h-16 ml-8"></img></Link>     
         <Link to="/profile"><div className="text-white font-bold text-xl ml-4">username</div></Link>          
       </div>
-      <div className='font-bold text-2xl text-white h-10 mb-1 mt-8'>
+      <div className=' text-2xl text-white h-10 mb-1 mt-8'>
         This is the post title
       </div>
       <div className='mt-8 flex justify-center'>

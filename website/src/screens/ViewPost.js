@@ -10,6 +10,7 @@ const ViewPost = () => {
       <LeftBar></LeftBar>
       <div className="w-6/12 rounded-3xl">
         <VisualizePost></VisualizePost>
+        <Comments></Comments>
       </div>
       <RightBar></RightBar>
     </div>
