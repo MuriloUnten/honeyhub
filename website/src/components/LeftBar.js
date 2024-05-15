@@ -5,7 +5,7 @@ import profile from "../assets/profile.png";
 
 const LeftBar = () => {
   return (
-    <div className="w-2/12 h-screen bg-black2 rounded-3xl flex flex-col justify-between">
+    <div className="w-2/12 h-[95vh] bg-black2 rounded-3xl flex flex-col justify-between">
       <div>
           <img src={beeHive} className="w-16 h-16 ml-6 mt-8" alt="Beehive"></img>
           <ul className="space-x-4">
