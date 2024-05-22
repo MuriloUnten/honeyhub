@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS "honeyhub";
-CREATE DATABASE "honeyhub";
-USE "honeyhub";
+DROP DATABASE IF EXISTS honeyhub;
+CREATE DATABASE honeyhub;
+USE honeyhub;
 
 
 CREATE TABLE app_user (
@@ -25,8 +25,13 @@ CREATE TABLE community_follower (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
     community_id INT NOT NULL,
-    FOREIGN KEY (user_id) app_user(id),
-    FOREIGN KEY (community_id) community(id)
+    FOREIGN KEY (user_id) REFERENCES app_user(id),
+    FOREIGN KEY (community_id) REFERENCES community(id)
+);
+
+CREATE TABLE post_type (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    type_name VARCHAR(10) NOT NULL UNIQUE
 );
 
 CREATE TABLE post (
@@ -47,18 +52,14 @@ CREATE TABLE reaction (
     user_id INT NOT NULL,
     post_id INT NOT NULL,
     up_or_down_vote VARCHAR(1) NOT NULL,
-    FOREIGN KEY (user_id) app_user(id),
-    FOREIGN KEY (post_id) post(id)
+    FOREIGN KEY (user_id) REFERENCES app_user(id),
+    FOREIGN KEY (post_id) REFERENCES post(id)
 );
 
 CREATE TABLE post_media (
     id INT PRIMARY KEY AUTO_INCREMENT,
     post_id INT NOT NULL,
     -- media some kind of blob
-    FOREIGN KEY (post_id) post(id)
+    FOREIGN KEY (post_id) REFERENCES post(id)
 );
 
-CREATE TABLE post_type (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    type_name VARCHAR(10) NOT NULL UNIQUE
-);
