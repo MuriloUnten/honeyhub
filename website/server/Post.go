@@ -7,14 +7,14 @@ type Post struct {
     body string
 }
 
-func (p Post) Id() int {
+func (p *Post) Id() int {
     return p.id
 }
 
-func (p Post) Title() string {
+func (p *Post) Title() string {
     return p.title
 }
 
-func (p Post) Body() string {
+func (p *Post) Body() string {
     return p.body
 }

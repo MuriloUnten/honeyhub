@@ -10,42 +10,42 @@ type User struct {
     sex string
 }
 
-func (u User) CreatePost() {
+func (u *User) CreatePost() {
 
 }
 
-func (u User) CreateComment() {
+func (u *User) CreateComment() {
 
 }
 
-func (u User) CreateCommunity() {
+func (u *User) CreateCommunity() {
 
 }
 
-func (u User) FollowCommunity() {
+func (u *User) FollowCommunity() {
 
 }
 
-func (u User) Id() int {
+func (u *User) Id() int {
     return u.id
 }
 
-func (u User) Email() string {
+func (u *User) Email() string {
     return u.email
 }
 
-func (u User) Username() string {
+func (u *User) Username() string {
     return u.username
 }
 
-func (u User) FirstName() string {
+func (u *User) FirstName() string {
     return u.firstName
 }
 
-func (u User) LastName() string {
+func (u *User) LastName() string {
     return u.lastName
 }
 
-func (u User) Sex() string {
+func (u *User) Sex() string {
     return u.sex
 }
