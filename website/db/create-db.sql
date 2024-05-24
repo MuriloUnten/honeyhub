@@ -10,15 +10,16 @@ CREATE TABLE app_user (
     first_name VARCHAR(30),
     last_name VARCHAR(50),
     password_hash VARCHAR(32) NOT NULL,
-    sex VARCHAR(1)
+    sex VARCHAR(1),
+    profile_picture_path VARCHAR(255)
 );
 
 CREATE TABLE community (
     id INT PRIMARY KEY AUTO_INCREMENT,
     community_name VARCHAR(20) NOT NULL UNIQUE,
-    description VARCHAR(100)
-    -- logo some kind of blob,
-    -- banner some kind of blob,
+    description VARCHAR(100),
+    logo_path VARCHAR(255),
+    banner_path VARCHAR(255)
 );
 
 CREATE TABLE community_follower (
@@ -59,7 +60,7 @@ CREATE TABLE reaction (
 CREATE TABLE post_media (
     id INT PRIMARY KEY AUTO_INCREMENT,
     post_id INT NOT NULL,
-    -- media some kind of blob
+    media_path VARCHAR(255),
     FOREIGN KEY (post_id) REFERENCES post(id)
 );
 
