@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {useParams} from "react-router-dom"
 import Comments from "./Comments";
 import { PostsSection } from "./PostsSection";
-import profile from "../assets/profile.png";
+import noProfilePicture from "../assets/profile.png";
 import HasntPosted from "./HasntPosted";
 
 const BASE_URL = "http://localhost:3001/api"
@@ -10,12 +10,18 @@ const BASE_URL = "http://localhost:3001/api"
 const ViewProfile = () => {
     const {id} = useParams()
     const [user, setUser] = useState(null);
+    const [profilePicture, setProfilePicture] = useState(noProfilePicture)
 
     useEffect(() => {
         const fetchUser = async () => {
-            const response = await fetch(`${BASE_URL}/user/${id}`);
+            let response = await fetch(`${BASE_URL}/user/${id}`);
             const user = await response.json();
             setUser(user);
+            if (user.profilePicture != "") {
+                setProfilePicture(`${BASE_URL}/media/${user.profilePicture}`)
+            }
+
+            
         }
         fetchUser();
     }, []) 
@@ -41,7 +47,7 @@ const ViewProfile = () => {
   return (
     <div className="w-full bg-black2 rounded-3xl px-8 py-2 mb-4">
       <div className="h-40">
-        <img src={profile} className="max-h-40" alt="Profile" />
+        <img src={profilePicture} className="max-h-40 rounded-3xl" alt="Profile" />
       </div>
       <div className="ml-4">
         <div className="font-bold text-3xl text-white mb-1">{user && user.username}</div>
