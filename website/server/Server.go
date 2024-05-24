@@ -4,6 +4,7 @@ import (
     "fmt"
     "log"
     "net/http"
+    "github.com/rs/cors"
     _ "github.com/go-sql-driver/mysql"
     "database/sql"
     "syscall"
@@ -18,30 +19,6 @@ type Server struct {
 }
 
 
-func (s *Server) handleRoutes(mux *http.ServeMux) {
-    mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "hello world\n")
-    })
-
-    mux.HandleFunc("GET /api/user/{id}", s.userDataHandler)
-}
-
-
-// TODO fix me. This is temporary and awful
-func (s *Server) userDataHandler(w http.ResponseWriter, r *http.Request) {
-    var username string
-    var email string
-    query := "SELECT username, email FROM app_user WHERE id=" + r.PathValue("id")
-    fmt.Println(query)
-    err := s.db.QueryRow(query).Scan(&username, &email)
-    if err != nil {
-        log.Fatal(err)
-    }
-    fmt.Fprintf(w, "username: %s\n", username)
-    fmt.Fprintf(w, "email: %s\n", email)
-}
-
-
 func (s *Server) runServer() {
     s.db = s.connectDB()
     defer s.db.Close()
@@ -49,8 +26,12 @@ func (s *Server) runServer() {
 
     mux := http.NewServeMux()
     s.handleRoutes(mux)
+    c := cors.New(cors.Options{
+        AllowedOrigins: []string{"http://localhost:3000"},
+    })
+    handler := c.Handler(mux)
 
-    err := http.ListenAndServe("localhost:3001", mux)
+    err := http.ListenAndServe("localhost:3001", handler)
     if err != nil {
         log.Fatal(err)
     }

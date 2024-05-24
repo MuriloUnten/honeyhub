@@ -1,4 +1,9 @@
-import { createBrowserRouter, RouterProvider, createRoutesFromElements, Route} from "react-router-dom"
+import {
+    createBrowserRouter,
+    createRoutesFromElements,
+    Route,
+    RouterProvider
+} from "react-router-dom"
 
 import Feed from "./screens/Feed";  
 import SignUp, {signUpAction} from "./screens/SignUp";
@@ -18,7 +23,9 @@ const router = createBrowserRouter(
         <Route path="/create-post" element={<CreatePost />} /> 
         <Route path="/community" element={<Community />} />
         <Route path="/create-post" element={<CreatePost />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile />}>
+            <Route path=":id" element={<Profile />} />
+        </Route>
         <Route path="/view-post" element={<ViewPost />} />
         </>
     )
