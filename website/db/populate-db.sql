@@ -1,6 +1,6 @@
 USE honeyhub;
 
-INSERT INTO app_user (email, username, first_name, last_name, password_hash, sex)
+INSERT INTO app_user (email, username, first_name, last_name, password_hash, sex, profile_picture_path)
 VALUES
 (
     "murilo.unten@proton.me",
@@ -8,7 +8,8 @@ VALUES
     "Murilo",
     "Unten",
     "a$$word", -- trust me, this is not my real password for anything
-    "M"
+    "M",
+    "1.jpg"
 ),
 (
     "thomaspinton@gmail.com",
@@ -16,7 +17,8 @@ VALUES
     "Thomas",
     "Pinton",
     "bananinha123",
-    "M"
+    "M",
+    "2.jpg"
 ),
 (
     "vkz.yamada@gmail.com",
@@ -24,7 +26,8 @@ VALUES
     "Vitor",
     "Yamada",
     "vai_furacao",
-    "M"
+    "M",
+    "3.jpg"
 );
 
 INSERT INTO community (community_name, description)

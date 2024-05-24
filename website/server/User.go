@@ -8,6 +8,7 @@ type User struct {
     FirstName string `json:"firstName"`
     LastName string `json:"lastName"`
     Sex string `json:"sex"`
+    ProfilePicture string `json:"profilePicture"`
 }
 
 func (u *User) CreatePost() {
@@ -49,5 +50,9 @@ func (u *User) LastName() string {
 
 func (u *User) Sex() string {
     return u.sex
+}
+
+func (u *User) ProfilePicture() string {
+    return u.ProfilePicture
 }
 */
