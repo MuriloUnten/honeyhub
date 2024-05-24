@@ -2,9 +2,9 @@ package main
 
 
 type Post struct {
-    id int
-    title string
-    body string
+    id int `json:"id"`
+    title string `json:"title"`
+    body string `json:"body"`
 }
 
 func (p *Post) Id() int {

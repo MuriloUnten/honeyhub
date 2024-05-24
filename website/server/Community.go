@@ -2,9 +2,9 @@ package main
 
 
 type Community struct {
-    id int
-    name string
-    description string
+    id int `json:"id"`
+    name string `json:"name"`
+    description string `json:"description"`
 }
 
 func (c *Community) SelectPosts(n int) []int {

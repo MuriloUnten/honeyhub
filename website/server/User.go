@@ -2,12 +2,12 @@ package main
 
 
 type User struct {
-    id int
-    email string
-    username string
-    firstName string
-    lastName string
-    sex string
+    Id int `json:"id"`
+    Email string `json:"email"`
+    Username string `json:"username"`
+    FirstName string `json:"firstName"`
+    LastName string `json:"lastName"`
+    Sex string `json:"sex"`
 }
 
 func (u *User) CreatePost() {
@@ -26,6 +26,7 @@ func (u *User) FollowCommunity() {
 
 }
 
+/*
 func (u *User) Id() int {
     return u.id
 }
@@ -49,3 +50,4 @@ func (u *User) LastName() string {
 func (u *User) Sex() string {
     return u.sex
 }
+*/
