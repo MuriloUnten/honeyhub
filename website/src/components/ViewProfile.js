@@ -46,8 +46,8 @@ const ViewProfile = () => {
 
   return (
     <div className="w-full bg-black2 rounded-3xl px-8 py-2 mb-4">
-      <div className="h-40">
-        <img src={profilePicture} className="max-h-40 rounded-3xl" alt="Profile" />
+      <div className="h-40 my-5">
+        <img src={profilePicture} className="max-h-40 rounded-full" alt="Profile" />
       </div>
       <div className="ml-4">
         <div className="font-bold text-3xl text-white mb-1">{user && user.username}</div>
