@@ -7,11 +7,11 @@ CREATE TABLE app_user (
     id INT PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(255) NOT NULL UNIQUE,
     username VARCHAR(30) NOT NULL UNIQUE,
-    first_name VARCHAR(30),
-    last_name VARCHAR(50),
+    first_name VARCHAR(30) DEFAULT "UNDEFINED",
+    last_name VARCHAR(50) DEFAULT "UNDEFINEDJ",
     password_hash VARCHAR(32) NOT NULL,
-    sex VARCHAR(1),
-    profile_picture_path VARCHAR(255)
+    sex VARCHAR(1) DEFAULT "_",
+    profile_picture_path VARCHAR(255) DEFAULT "default.png"
 );
 
 CREATE TABLE community (

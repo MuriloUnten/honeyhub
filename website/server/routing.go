@@ -17,6 +17,7 @@ func (s *Server) handleRoutes(mux *http.ServeMux) {
 
     mux.HandleFunc("GET /api/user/{id}", s.getUserById)
     mux.HandleFunc("GET /api/media/{file}", s.getProfilePicture)
+    mux.HandleFunc("POST /api/create-account", s.createAccount)
 }
 
 
@@ -60,4 +61,43 @@ func (s *Server) getProfilePicture(w http.ResponseWriter, r *http.Request) {
     w.WriteHeader(http.StatusOK)
     w.Header().Set("Content-Type", "application/octet-stream")
     w.Write(fileBytes)
+}
+
+func (s *Server) createAccount(w http.ResponseWriter, r *http.Request) {
+    var user User
+    var password string
+    type tmpUser struct {
+        Email string
+        Username string
+        Password string
+    }
+    var tmp tmpUser
+    err := json.NewDecoder(r.Body).Decode(&tmp)
+    if err != nil {
+        log.Println(err)
+        w.WriteHeader(http.StatusBadRequest)
+        return
+    }
+    user.Username = tmp.Username
+    user.Email = tmp.Email
+    password = tmp.Password
+
+    query := "INSERT INTO app_user(username, email, password_hash)"
+    query += " VALUES " + " ('" + user.Username + "', '" + user.Email + "', '" + password + "');"
+    fmt.Println(query)
+    result, err := s.db.Exec(query)
+    if err != nil {
+        log.Println(err)
+        w.WriteHeader(http.StatusBadRequest)
+        return
+    }
+    id, _ := result.LastInsertId()
+    user.Id = int(id)
+
+    jsonData, err := json.Marshal(user)
+    if err != nil {
+        log.Fatal(err)
+    }
+    w.WriteHeader(http.StatusOK)
+    w.Write(jsonData)
 }

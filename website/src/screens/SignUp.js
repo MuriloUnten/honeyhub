@@ -2,6 +2,8 @@ import beeHive from '../assets/beeHiveSingUp.png'
 import SignUpForm from '../components/SignUpForm';
 import {redirect} from "react-router-dom"
 
+const BASE_URL = "http://localhost:3001/api"
+
 const SingUp = () => {
     return (
         <div className='flex h-screen'>
@@ -22,7 +24,18 @@ export const signUpAction = async ({request}) => {
         username: data.get("username"),
         password: data.get("password") // TODO Fix me (Terporary abomination)
     }
-
     console.log(submission)
-    return redirect("/feed")
+
+    const result = await fetch(BASE_URL + "/create-account", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(submission)
+    })
+
+    console.log(result)
+    const jsonResult = await result.json()
+    console.log(jsonResult)
+    return redirect(`/profile/${jsonResult.id}`)
 }
