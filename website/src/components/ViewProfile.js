@@ -18,7 +18,7 @@ const ViewProfile = () => {
             const user = await response.json();
             setUser(user);
             if (user.profilePicture != "") {
-                setProfilePicture(`${BASE_URL}/media/${user.profilePicture}`)
+                setProfilePicture(`${BASE_URL}/profile-picture/${user.id}`)
             }
 
             

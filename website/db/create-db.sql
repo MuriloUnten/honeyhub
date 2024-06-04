@@ -8,7 +8,7 @@ CREATE TABLE app_user (
     email VARCHAR(255) NOT NULL UNIQUE,
     username VARCHAR(30) NOT NULL UNIQUE,
     first_name VARCHAR(30) DEFAULT "UNDEFINED",
-    last_name VARCHAR(50) DEFAULT "UNDEFINEDJ",
+    last_name VARCHAR(50) DEFAULT "UNDEFINED",
     password_hash VARCHAR(32) NOT NULL,
     sex VARCHAR(1) DEFAULT "_",
     profile_picture_path VARCHAR(255) DEFAULT "default.png"

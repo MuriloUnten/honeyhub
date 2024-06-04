@@ -26,7 +26,7 @@ export const signUpAction = async ({request}) => {
     }
     console.log(submission)
 
-    const result = await fetch(BASE_URL + "/create-account", {
+    const response = await fetch(BASE_URL + "/create-account", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -34,8 +34,8 @@ export const signUpAction = async ({request}) => {
         body: JSON.stringify(submission)
     })
 
-    console.log(result)
-    const jsonResult = await result.json()
-    console.log(jsonResult)
-    return redirect(`/profile/${jsonResult.id}`)
+    console.log(response)
+    const jsonResponse = await response.json()
+    console.log(jsonResponse)
+    return redirect(`/profile/${jsonResponse.id}`)
 }

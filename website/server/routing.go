@@ -9,95 +9,106 @@ import(
     "os"
 )
 
+func (s *Server) WriteJSON(w http.ResponseWriter, status int, body any) error {
+    w.Header().Add("Content-Type", "application/json")
+    w.WriteHeader(status)
+
+    return json.NewEncoder(w).Encode(body)
+}
+
+func (s *Server) WriteMedia(w http.ResponseWriter, status int, path string) error {
+    w.Header().Add("Content-Type", "application/octet-stream")
+    w.WriteHeader(status)
+
+    file, err := os.ReadFile(path)
+    if err != nil {
+        log.Println("could not read File.", err)
+        return err
+    }
+
+    w.WriteHeader(status)
+    w.Header().Set("Content-Type", "application/octet-stream")
+    w.Write(file)
+    return nil
+}
+
+type apiFunc func (w http.ResponseWriter, r *http.Request) error
+
+type ApiError struct {
+    Error string `json:"error"`
+}
+
+func (s *Server) makeHTTPHandlerFunc(f apiFunc) http.HandlerFunc {
+    return func(w http.ResponseWriter, r *http.Request) {
+        if err := f(w, r); err != nil {
+            s.WriteJSON(w, http.StatusBadRequest, ApiError{Error: err.Error()})
+        }
+
+    }
+}
 
 func (s *Server) handleRoutes(mux *http.ServeMux) {
     mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
         fmt.Fprintf(w, "hello world\n")
     })
 
-    mux.HandleFunc("GET /api/user/{id}", s.getUserById)
-    mux.HandleFunc("GET /api/media/{file}", s.getProfilePicture)
-    mux.HandleFunc("POST /api/create-account", s.createAccount)
+    mux.HandleFunc("GET /api/user/{id}", s.makeHTTPHandlerFunc(s.handleGetUserById))
+    mux.HandleFunc("GET /api/profile-picture/{id}", s.makeHTTPHandlerFunc(s.handleGetProfilePictureById))
+    mux.HandleFunc("POST /api/create-account", s.makeHTTPHandlerFunc(s.handleCreateAccount))
 }
 
-
-func (s *Server) getUserById(w http.ResponseWriter, r *http.Request) {
-    var err error
-    var id string = r.PathValue("id")
-    var u User
-    u.Id, err = strconv.Atoi(r.PathValue("id"))
+func (s *Server) handleGetUserById(w http.ResponseWriter, r *http.Request) error {
+    var idStr string = r.PathValue("id")
+    id, err := strconv.Atoi(idStr)
     if err != nil {
         log.Println(err)
-        w.WriteHeader(http.StatusBadRequest)
-        return
+        return err
     }
 
-    query := "SELECT username, email, first_name, last_name, sex, profile_picture_path FROM app_user WHERE id=" + id
-    err = s.db.QueryRow(query).Scan(&u.Username, &u.Email, &u.FirstName, &u.LastName, &u.Sex, &u.ProfilePicture)
-    if err != nil {
-        log.Fatal(err)
+    var u *User
+    if u, err = s.store.GetUserById(id); err != nil {
+        log.Println(err)
+        return err
     }
 
-    jsonData, err := json.Marshal(u)
-    if err != nil {
-        log.Fatal(err)
-    }
-    fmt.Println("Sending response: " + string(jsonData))
-    w.WriteHeader(http.StatusOK)
-    w.Write(jsonData)
+    s.WriteJSON(w, http.StatusOK, u)
+    return nil
 }
 
-func (s *Server) getProfilePicture(w http.ResponseWriter, r *http.Request) {
-    // TODO would be good to implement some sanitization to avoid reading unwanted file
-    fileName := r.PathValue("file")
+func (s *Server) handleGetProfilePictureById(w http.ResponseWriter, r *http.Request) error {
+    idStr := r.PathValue("id")
+    id, err := strconv.Atoi(idStr)
+    if err != nil {
+        log.Println(err)
+        return err
+    }
+
+    fileName, err := s.store.GetProfilePicPathById(id)
+    if err != nil {
+        return err
+    }
+
     filePath := "../media/profile-pictures/" + fileName
-    fileBytes, err := os.ReadFile(filePath)
-    if err != nil {
-        log.Println("could not read File.", err)
-        w.WriteHeader(http.StatusInternalServerError) // Maybe not the correct status code
-        return
-    }
-
-    w.WriteHeader(http.StatusOK)
-    w.Header().Set("Content-Type", "application/octet-stream")
-    w.Write(fileBytes)
+    return s.WriteMedia(w, http.StatusOK, filePath)
 }
 
-func (s *Server) createAccount(w http.ResponseWriter, r *http.Request) {
+func (s *Server) handleCreateAccount(w http.ResponseWriter, r *http.Request) error {
     var user User
-    var password string
-    type tmpUser struct {
-        Email string
-        Username string
-        Password string
-    }
-    var tmp tmpUser
-    err := json.NewDecoder(r.Body).Decode(&tmp)
+    var reqFields CreateUserRequest
+
+    err := json.NewDecoder(r.Body).Decode(&reqFields)
     if err != nil {
         log.Println(err)
-        w.WriteHeader(http.StatusBadRequest)
-        return
+        return err
     }
-    user.Username = tmp.Username
-    user.Email = tmp.Email
-    password = tmp.Password
 
-    query := "INSERT INTO app_user(username, email, password_hash)"
-    query += " VALUES " + " ('" + user.Username + "', '" + user.Email + "', '" + password + "');"
-    fmt.Println(query)
-    result, err := s.db.Exec(query)
-    if err != nil {
-        log.Println(err)
-        w.WriteHeader(http.StatusBadRequest)
-        return
-    }
-    id, _ := result.LastInsertId()
-    user.Id = int(id)
+    user.Username = reqFields.Username
+    user.Email = reqFields.Email
+    user.Password = reqFields.Password
 
-    jsonData, err := json.Marshal(user)
-    if err != nil {
-        log.Fatal(err)
+    if err = s.store.CreateUser(&user); err != nil {
+        return err
     }
-    w.WriteHeader(http.StatusOK)
-    w.Write(jsonData)
+    
+    return s.WriteJSON(w, http.StatusOK, user)
 }
