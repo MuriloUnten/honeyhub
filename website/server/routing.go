@@ -1,12 +1,12 @@
 package main
 
-import(
-    "net/http"
-    "encoding/json"
-    "fmt"
-    "log"
-    "strconv"
-    "os"
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"strconv"
 )
 
 func (s *Server) WriteJSON(w http.ResponseWriter, status int, body any) error {
@@ -55,6 +55,7 @@ func (s *Server) handleRoutes(mux *http.ServeMux) {
     mux.HandleFunc("GET /api/user/{id}", s.makeHTTPHandlerFunc(s.handleGetUserById))
     mux.HandleFunc("GET /api/profile-picture/{id}", s.makeHTTPHandlerFunc(s.handleGetProfilePictureById))
     mux.HandleFunc("POST /api/create-account", s.makeHTTPHandlerFunc(s.handleCreateAccount))
+    mux.HandleFunc("GET /api/posts/user/{userId}", s.makeHTTPHandlerFunc(s.handleGetUserPostsByUserId))
 }
 
 func (s *Server) handleGetUserById(w http.ResponseWriter, r *http.Request) error {
@@ -111,4 +112,23 @@ func (s *Server) handleCreateAccount(w http.ResponseWriter, r *http.Request) err
     }
     
     return s.WriteJSON(w, http.StatusOK, user)
+}
+
+func (s *Server) handleGetUserPostsByUserId(w http.ResponseWriter, r *http.Request) error {
+    userIdStr := r.PathValue("userId")
+    userId, err := strconv.Atoi(userIdStr)
+    if err != nil {
+        log.Println(err)
+        return err
+    }
+
+    var posts []*GetPostsRequest
+    posts, err = s.store.GetUserPostsByUserId(userId)
+    if err != nil {
+        log.Println(err)
+        return err
+    }
+
+    s.WriteJSON(w, http.StatusOK, posts)
+    return nil
 }

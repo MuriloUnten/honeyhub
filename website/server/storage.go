@@ -1,11 +1,12 @@
 package main
 
 import (
-    "database/sql"
-    "fmt"
-    "log"
-    "syscall"
-    "golang.org/x/term"
+	"database/sql"
+	"fmt"
+	"log"
+	"syscall"
+
+	"golang.org/x/term"
 )
 
 
@@ -13,7 +14,13 @@ type Storage interface {
     CreateUser(*User) error
     GetUserById(int) (*User, error)
     GetProfilePicPathById(int) (string, error)
-
+    GetUserPostsByUserId(int) ([]*GetPostsRequest, error)
+    /*
+    CreatePost(*Post) error
+    GetPostById(int) (*Post, error)
+    CreateComment(*Comment) error
+    GetPostComments(int) ([]*Post, error)
+    */
 }
 
 type MySQLStorage struct {
@@ -81,6 +88,38 @@ func (s *MySQLStorage) GetProfilePicPathById(id int) (string, error) {
     return path, nil
 }
 
+func (s * MySQLStorage) GetUserPostsByUserId(id int) ([]*GetPostsRequest, error) {
+    posts := make([]*GetPostsRequest, 0)
+    q := `
+    SELECT title, body, app_user.username, community.community_name
+    FROM post JOIN community ON post.community_id = community.id
+    JOIN app_user ON post.user_id = app_user.id
+    WHERE user_id = ?;
+    `
+    rows, err := s.db.Query(q, id)
+    if err != nil {
+        return nil, err
+    }
+
+    for rows.Next() {
+        p := new(GetPostsRequest)
+        err := rows.Scan(
+            &p.Post.Title,
+            &p.Post.Body,
+            &p.User.Username,
+            &p.Community.Name,
+        )
+        if err != nil {
+            return nil, err
+        }
+
+        p.User.Id = id
+        posts = append(posts, p)
+    }
+
+    return posts, nil
+}
+
 func authenticate() (user string, password string) {
 
     fmt.Print("database user: ")
@@ -96,3 +135,4 @@ func authenticate() (user string, password string) {
     password = string(bytePassword)
     return 
 }
+
