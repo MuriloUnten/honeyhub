@@ -54,6 +54,7 @@ func (s *Server) handleRoutes(mux *http.ServeMux) {
 
     mux.HandleFunc("GET /api/user/{id}", s.makeHTTPHandlerFunc(s.handleGetUserById))
     mux.HandleFunc("GET /api/profile-picture/{id}", s.makeHTTPHandlerFunc(s.handleGetProfilePictureById))
+    mux.HandleFunc("GET /api/user/feed/{userId}", s.makeHTTPHandlerFunc(s.handleGetUserPostsByUserId))
     mux.HandleFunc("POST /api/create-account", s.makeHTTPHandlerFunc(s.handleCreateAccount))
     mux.HandleFunc("GET /api/posts/user/{userId}", s.makeHTTPHandlerFunc(s.handleGetUserPostsByUserId))
 }
@@ -130,5 +131,23 @@ func (s *Server) handleGetUserPostsByUserId(w http.ResponseWriter, r *http.Reque
     }
 
     s.WriteJSON(w, http.StatusOK, posts)
+    return nil
+}
+
+func (s *Server) handleGetUserFeedById(w http.ResponseWriter, r *http.Request) error {
+    userIdStr := r.PathValue("userId")
+    userId, err := strconv.Atoi(userIdStr)
+    if err != nil {
+        return err
+    }
+    
+    var postsData []*GetPostsRequest
+    postsData, err = s.store.GetUserFeed(userId)
+    if err != nil {
+        log.Println(err)
+        return err
+    }
+
+    s.WriteJSON(w, http.StatusOK, postsData)
     return nil
 }

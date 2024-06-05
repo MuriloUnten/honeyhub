@@ -2,6 +2,7 @@ import Post from "./Post";
 
 export const PostsSection = (props) => {
 
+
     function assemblePosts(array) {
         let postsJSX = [];
         array.forEach((object) => {
@@ -11,7 +12,6 @@ export const PostsSection = (props) => {
     }
 
     let posts = assemblePosts(props.posts);
-
     return (
         <div>
             {posts}

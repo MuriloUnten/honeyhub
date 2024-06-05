@@ -12,6 +12,17 @@ const ViewProfile = () => {
     const [user, setUser] = useState(null);
     const [profilePicture, setProfilePicture] = useState(noProfilePicture)
 
+    const {userId} = useParams()
+    const [posts, setPosts] = useState([]);
+    useEffect(() => {
+        const fetchPosts = async () => {
+            let response = await fetch(`${BASE_URL}/posts/user/${id}`);
+            const posts = await response.json();
+            setPosts(posts);
+        }
+        fetchPosts();
+    }, [])
+
     useEffect(() => {
         const fetchUser = async () => {
             let response = await fetch(`${BASE_URL}/user/${id}`);
@@ -30,7 +41,7 @@ const ViewProfile = () => {
     const renderComponent = () => {
         switch (activeComponent) {
             case "Overview":
-                return <PostsSection />;
+                return <PostsSection posts={posts}/>;
             case "Posts":
                 return <HasntPosted />;
             case "Comments":

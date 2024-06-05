@@ -12,7 +12,7 @@ function Feed() {
     const [posts, setPosts] = useState([]);
     useEffect(() => {
         const fetchPosts = async () => {
-            let response = await fetch(`${BASE_URL}/posts/user/1`);
+            let response = await fetch(`${BASE_URL}/user/feed/1`);
             const posts = await response.json();
             setPosts(posts);
         }
