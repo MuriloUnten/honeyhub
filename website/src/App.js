@@ -21,7 +21,9 @@ const router = createBrowserRouter(
         <Route path="/login" element={<LogIn />} action={logInAction} /> 
         <Route path="/signup" element={<SignUp />} action={signUpAction} />
         <Route path="/create-post" element={<CreatePost />} /> 
-        <Route path="/community" element={<Community />} />
+        <Route path="/community" element={<Community />}>
+            <Route path=":id" element={<Community />} />
+        </Route>
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/profile" element={<Profile />}>
             <Route path=":id" element={<Profile />} />

@@ -54,9 +54,10 @@ func (s *Server) handleRoutes(mux *http.ServeMux) {
 
     mux.HandleFunc("GET /api/user/{id}", s.makeHTTPHandlerFunc(s.handleGetUserById))
     mux.HandleFunc("GET /api/profile-picture/{id}", s.makeHTTPHandlerFunc(s.handleGetProfilePictureById))
-    mux.HandleFunc("GET /api/user/feed/{userId}", s.makeHTTPHandlerFunc(s.handleGetUserPostsByUserId))
+    mux.HandleFunc("GET /api/user/feed/{userId}", s.makeHTTPHandlerFunc(s.handleGetUserFeedById))
     mux.HandleFunc("POST /api/create-account", s.makeHTTPHandlerFunc(s.handleCreateAccount))
     mux.HandleFunc("GET /api/posts/user/{userId}", s.makeHTTPHandlerFunc(s.handleGetUserPostsByUserId))
+    mux.HandleFunc("GET /api/community/posts/{id}", s.makeHTTPHandlerFunc(s.handleGetCommunityPosts))
 }
 
 func (s *Server) handleGetUserById(w http.ResponseWriter, r *http.Request) error {
@@ -150,4 +151,30 @@ func (s *Server) handleGetUserFeedById(w http.ResponseWriter, r *http.Request) e
 
     s.WriteJSON(w, http.StatusOK, postsData)
     return nil
+}
+
+func (s *Server) handleGetCommunityPosts(w http.ResponseWriter, r *http.Request) error {
+    id, err := s.getId(r)
+    if err != nil {
+        return err
+    }
+    
+    postsData, err := s.store.GetCommunityPosts(id)
+    if err != nil {
+        return err
+    }
+
+    s.WriteJSON(w, http.StatusOK, postsData)
+    return nil
+}
+
+func (s *Server) getId(r *http.Request) (int, error) {
+    idStr := r.PathValue("id")
+    
+    id, err := strconv.Atoi(idStr)
+    if err != nil {
+        return -1, fmt.Errorf("Invalid id %s", idStr)
+    }
+
+    return id, nil
 }

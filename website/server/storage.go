@@ -16,6 +16,7 @@ type Storage interface {
     GetProfilePicPathById(int) (string, error)
     GetUserPostsByUserId(int) ([]*GetPostsRequest, error)
     GetUserFeed(int) ([]*GetPostsRequest, error)
+    GetCommunityPosts(int) ([]*GetPostsRequest, error)
     /*
     CreatePost(*Post) error
     GetPostById(int) (*Post, error)
@@ -46,8 +47,7 @@ func (s *MySQLStorage) CreateUser(u *User) error {
     result, err := s.db.Exec(q, u.Username, u.Email, u.Password)
     if err != nil {
         log.Println(err, "here")
-        return err
-    }
+        return err }
     
     id, _ := result.LastInsertId()
     u.Id = int(id)
@@ -92,7 +92,7 @@ func (s *MySQLStorage) GetProfilePicPathById(id int) (string, error) {
 func (s * MySQLStorage) GetUserPostsByUserId(id int) ([]*GetPostsRequest, error) {
     posts := make([]*GetPostsRequest, 0)
     q := `
-    SELECT title, body, app_user.username, community.community_name
+    SELECT title, body, app_user.username, app_user.id, community.community_name
     FROM post JOIN community ON post.community_id = community.id
     JOIN app_user ON post.user_id = app_user.id
     WHERE user_id = ? AND post_type_id = 1;
@@ -108,13 +108,13 @@ func (s * MySQLStorage) GetUserPostsByUserId(id int) ([]*GetPostsRequest, error)
             &p.Post.Title,
             &p.Post.Body,
             &p.User.Username,
+            &p.User.Id,
             &p.Community.Name,
         )
         if err != nil {
             return nil, err
         }
 
-        p.User.Id = id
         posts = append(posts, p)
     }
 
@@ -123,7 +123,7 @@ func (s * MySQLStorage) GetUserPostsByUserId(id int) ([]*GetPostsRequest, error)
 
 func (s *MySQLStorage) GetUserFeed(id int) ([]*GetPostsRequest, error) {
     q := `
-    SELECT title, body, app_user.username, community.community_name
+    SELECT title, body, app_user.username, app_user.id, community.community_name
     FROM post JOIN community ON post.community_id = community.id
     JOIN app_user ON post.user_id = app_user.id
     WHERE community_id IN
@@ -131,8 +131,37 @@ func (s *MySQLStorage) GetUserFeed(id int) ([]*GetPostsRequest, error) {
     AND post_type_id = 1;
     `
 
-    rows, err := s.db.Query(q, id)
+    postsData, err := s.getPosts(q, id)
     if err != nil {
+        return nil, err
+    }
+
+    return postsData, nil
+}
+
+func (s *MySQLStorage) GetCommunityPosts(id int) ([]*GetPostsRequest, error) {
+    q := `
+    SELECT title, body, app_user.username, app_user.id, community.community_name
+    FROM post JOIN community ON post.community_id = community.id
+    JOIN app_user ON post.user_id = app_user.id
+    WHERE community.id = ?
+    AND post_type_id = 1;
+    `
+
+    postsData, err := s.getPosts(q, id)
+    if err != nil {
+        return nil, err
+    }
+
+    return postsData, nil
+}
+
+func (s *MySQLStorage) getPosts(query string, v ... any) ([]*GetPostsRequest, error) {
+    rows, err := s.db.Query(query, v...)
+    fmt.Printf("%T\n", v)
+    fmt.Println(v)
+    if err != nil {
+        log.Println(err, "inside db.query()")
         return nil, err
     }
 
@@ -143,13 +172,14 @@ func (s *MySQLStorage) GetUserFeed(id int) ([]*GetPostsRequest, error) {
             &p.Post.Title,
             &p.Post.Body,
             &p.User.Username,
+            &p.User.Id,
             &p.Community.Name,
         )
         if err != nil {
+            log.Println(err, "inside for rows.Next()")
             return nil, err
         }
 
-        p.User.Id = id
         postsData = append(postsData, p)
     }
 
