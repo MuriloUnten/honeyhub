@@ -90,35 +90,18 @@ func (s *MySQLStorage) GetProfilePicPathById(id int) (string, error) {
 }
 
 func (s * MySQLStorage) GetUserPostsByUserId(id int) ([]*GetPostsRequest, error) {
-    posts := make([]*GetPostsRequest, 0)
     q := `
     SELECT title, body, app_user.username, app_user.id, community.community_name
     FROM post JOIN community ON post.community_id = community.id
     JOIN app_user ON post.user_id = app_user.id
     WHERE user_id = ? AND post_type_id = 1;
     `
-    rows, err := s.db.Query(q, id)
+    postsData, err := s.getPosts(q, id)
     if err != nil {
         return nil, err
     }
 
-    for rows.Next() {
-        p := new(GetPostsRequest)
-        err := rows.Scan(
-            &p.Post.Title,
-            &p.Post.Body,
-            &p.User.Username,
-            &p.User.Id,
-            &p.Community.Name,
-        )
-        if err != nil {
-            return nil, err
-        }
-
-        posts = append(posts, p)
-    }
-
-    return posts, nil
+    return postsData, nil
 }
 
 func (s *MySQLStorage) GetUserFeed(id int) ([]*GetPostsRequest, error) {
@@ -158,10 +141,8 @@ func (s *MySQLStorage) GetCommunityPosts(id int) ([]*GetPostsRequest, error) {
 
 func (s *MySQLStorage) getPosts(query string, v ... any) ([]*GetPostsRequest, error) {
     rows, err := s.db.Query(query, v...)
-    fmt.Printf("%T\n", v)
-    fmt.Println(v)
     if err != nil {
-        log.Println(err, "inside db.query()")
+        log.Println(err)
         return nil, err
     }
 
@@ -176,7 +157,7 @@ func (s *MySQLStorage) getPosts(query string, v ... any) ([]*GetPostsRequest, er
             &p.Community.Name,
         )
         if err != nil {
-            log.Println(err, "inside for rows.Next()")
+            log.Println(err)
             return nil, err
         }
 

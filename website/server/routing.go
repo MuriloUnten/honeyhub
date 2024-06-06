@@ -54,9 +54,9 @@ func (s *Server) handleRoutes(mux *http.ServeMux) {
 
     mux.HandleFunc("GET /api/user/{id}", s.makeHTTPHandlerFunc(s.handleGetUserById))
     mux.HandleFunc("GET /api/profile-picture/{id}", s.makeHTTPHandlerFunc(s.handleGetProfilePictureById))
-    mux.HandleFunc("GET /api/user/feed/{userId}", s.makeHTTPHandlerFunc(s.handleGetUserFeedById))
+    mux.HandleFunc("GET /api/user/feed/{id}", s.makeHTTPHandlerFunc(s.handleGetUserFeedById))
     mux.HandleFunc("POST /api/create-account", s.makeHTTPHandlerFunc(s.handleCreateAccount))
-    mux.HandleFunc("GET /api/posts/user/{userId}", s.makeHTTPHandlerFunc(s.handleGetUserPostsByUserId))
+    mux.HandleFunc("GET /api/posts/user/{id}", s.makeHTTPHandlerFunc(s.handleGetUserPostsByUserId))
     mux.HandleFunc("GET /api/community/posts/{id}", s.makeHTTPHandlerFunc(s.handleGetCommunityPosts))
 }
 
@@ -117,8 +117,7 @@ func (s *Server) handleCreateAccount(w http.ResponseWriter, r *http.Request) err
 }
 
 func (s *Server) handleGetUserPostsByUserId(w http.ResponseWriter, r *http.Request) error {
-    userIdStr := r.PathValue("userId")
-    userId, err := strconv.Atoi(userIdStr)
+    userId, err := s.getId(r)
     if err != nil {
         log.Println(err)
         return err
@@ -136,8 +135,7 @@ func (s *Server) handleGetUserPostsByUserId(w http.ResponseWriter, r *http.Reque
 }
 
 func (s *Server) handleGetUserFeedById(w http.ResponseWriter, r *http.Request) error {
-    userIdStr := r.PathValue("userId")
-    userId, err := strconv.Atoi(userIdStr)
+    userId, err := s.getId(r)
     if err != nil {
         return err
     }
