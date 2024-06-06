@@ -167,6 +167,28 @@ func (s *MySQLStorage) getPosts(query string, v ... any) ([]*GetPostsRequest, er
     return postsData, nil
 }
 
+func (s *MySQLStorage) GetPostById(id int) (*Post, error) {
+    q := `
+        SELECT title, body 
+        FROM post JOIN post_media ON post.id = post_media.post_id
+        WHERE post.id = ?;
+    `
+    row, err := s.db.QueryRow(q, id)
+    if err != nil {
+        return nil, err
+    }
+
+    p := new(Post)
+
+    err = row.Scan(&p.Title, &p.Body)
+
+    if err != nil {
+        return nil, err 
+    }
+
+    return p, nil
+}
+
 func authenticate() (user string, password string) {
 
     fmt.Print("database user: ")
