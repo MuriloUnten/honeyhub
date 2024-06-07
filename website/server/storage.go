@@ -17,6 +17,7 @@ type Storage interface {
     GetUserPostsByUserId(int) ([]*GetPostsRequest, error)
     GetUserFeed(int) ([]*GetPostsRequest, error)
     GetCommunityPosts(int) ([]*GetPostsRequest, error)
+    AuthUser(string, string) (bool, error)
     /*
     CreatePost(*Post) error
     GetPostById(int) (*Post, error)
@@ -137,6 +138,22 @@ func (s *MySQLStorage) GetCommunityPosts(id int) ([]*GetPostsRequest, error) {
     }
 
     return postsData, nil
+}
+
+func (s *MySQLStorage) AuthUser(username string, password string) (bool, error) {
+    q := `
+    SELECT id FROM app_user
+    WHERE username = ?
+    AND password = ?;
+    `
+
+    var id int
+    row := s.db.QueryRow(q, username, password)
+    if err := row.Scan(&id); err != nil {
+        return false, err
+    }
+
+    return true, nil
 }
 
 func (s *MySQLStorage) getPosts(query string, v ... any) ([]*GetPostsRequest, error) {

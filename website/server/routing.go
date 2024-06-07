@@ -58,6 +58,7 @@ func (s *Server) handleRoutes(mux *http.ServeMux) {
     mux.HandleFunc("POST /api/create-account", s.makeHTTPHandlerFunc(s.handleCreateAccount))
     mux.HandleFunc("GET /api/posts/user/{id}", s.makeHTTPHandlerFunc(s.handleGetUserPostsByUserId))
     mux.HandleFunc("GET /api/community/posts/{id}", s.makeHTTPHandlerFunc(s.handleGetCommunityPosts))
+    mux.HandleFunc("GET /api/auth", s.makeHTTPHandlerFunc(s.handleUserAuth))
 }
 
 func (s *Server) handleGetUserById(w http.ResponseWriter, r *http.Request) error {
@@ -163,6 +164,24 @@ func (s *Server) handleGetCommunityPosts(w http.ResponseWriter, r *http.Request)
     }
 
     s.WriteJSON(w, http.StatusOK, postsData)
+    return nil
+}
+
+func (s *Server) handleUserAuth(w http.ResponseWriter, r *http.Request) error {
+    username, password, ok := r.BasicAuth()
+    if !ok {
+        return fmt.Errorf("failed to authenticate.")
+    }
+
+    authStatus, err := s.store.AuthUser(username, password)
+    if err != nil {
+        return err
+    }
+
+    if authStatus {
+        // Create JWT
+    }
+
     return nil
 }
 
