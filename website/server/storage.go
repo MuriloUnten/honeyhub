@@ -18,8 +18,9 @@ type Storage interface {
     GetUserFeed(int) ([]*GetPostsRequest, error)
     GetCommunityPosts(int) ([]*GetPostsRequest, error)
     AuthUser(string, string) (bool, error)
+    CreatePost(*CreatePostRequest) (*Post, error)
+    CreateComment(*CreateCommentRequest) (*Post, error)
     /*
-    CreatePost(*Post) error
     GetPostById(int) (*Post, error)
     CreateComment(*Comment) error
     GetPostComments(int) ([]*Post, error)
@@ -138,6 +139,48 @@ func (s *MySQLStorage) GetCommunityPosts(id int) ([]*GetPostsRequest, error) {
     }
 
     return postsData, nil
+}
+
+func (s *MySQLStorage) CreatePost(p *CreatePostRequest) (*Post, error) {
+    q := "INSERT INTO post(user_id, community_id, post_type_id, title, body) VALUES (?, ?, 1, ?, ?);"
+
+    result, err := s.db.Exec(q, p.UserId, p.CommunityId, p.Post.Title, p.Post.Body)
+    if err != nil {
+        return nil, err
+    }
+
+    postId, err := result.LastInsertId()
+    if err != nil {
+        return nil, err
+    }
+
+    post := &Post {
+        Id: int(postId),
+        Title: p.Post.Title,
+        Body: p.Post.Body,
+    }
+    return post, nil
+}
+
+func (s *MySQLStorage) CreateComment(c *CreateCommentRequest) (*Post, error) {
+    q := `INSERT INTO post(user_id, community_id, post_type_id, parent_post_id, body) VALUES (?, ?, 2, ?, ?);`
+
+    result, err := s.db.Exec(q, c.UserId, c.CommunityId, c.ParentPostId, c.Body)
+    if err != nil {
+        return nil, err
+    }
+
+    commentId, err := result.LastInsertId()
+    if err != nil {
+        return nil, err
+    }
+
+    comment := &Post {
+        Id: int(commentId),
+        Title: "",
+        Body: c.Body,
+    }
+    return comment, nil
 }
 
 func (s *MySQLStorage) AuthUser(username string, password string) (bool, error) {
