@@ -17,7 +17,7 @@ type Storage interface {
     GetUserPostsByUserId(int) ([]*GetPostsRequest, error)
     GetUserFeed(int) ([]*GetPostsRequest, error)
     GetCommunityPosts(int) ([]*GetPostsRequest, error)
-    AuthUser(string, string) (bool, error)
+    AuthUser(string, string) (bool, *User, error)
     CreatePost(*CreatePostRequest) (*Post, error)
     CreateComment(*CreateCommentRequest) (*Post, error)
     /*
@@ -183,20 +183,20 @@ func (s *MySQLStorage) CreateComment(c *CreateCommentRequest) (*Post, error) {
     return comment, nil
 }
 
-func (s *MySQLStorage) AuthUser(username string, password string) (bool, error) {
+func (s *MySQLStorage) AuthUser(username string, password string) (bool, *User, error) {
     q := `
-    SELECT id FROM app_user
+    SELECT id, email, username, FROM app_user
     WHERE username = ?
     AND password = ?;
     `
 
-    var id int
+    user := new(User)
     row := s.db.QueryRow(q, username, password)
-    if err := row.Scan(&id); err != nil {
-        return false, err
+    if err := row.Scan(&user.Id, &user.Email, &user.Username); err != nil {
+        return false, nil, err
     }
 
-    return true, nil
+    return true, user, nil
 }
 
 func (s *MySQLStorage) getPosts(query string, v ... any) ([]*GetPostsRequest, error) {

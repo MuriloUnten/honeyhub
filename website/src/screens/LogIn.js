@@ -26,13 +26,14 @@ export const logInAction = async ({ request }) => {
     const response = await fetch(BASE_URL + "/auth", {
         method: "GET",
         headers: {
-
+            "Content-Type": "application/json",
+            "Authorization": "Basic " + `${submission.email}:${submission.password}`
         },
-
     })
+    const loginResponse = await response.json()
+    localStorage.setItem("jwt-token", loginResponse.token)
+    console.log(localStorage.getItem("jwt-token"))
 
-
-    // send submission to backend to authenticate user
     // if authenticated then redirect to feed
     // else show error message
     return redirect("/feed");

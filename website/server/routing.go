@@ -7,7 +7,8 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-    jwt "github.com/golang-jwt/jwt/v5"
+
+	jwt "github.com/golang-jwt/jwt/v5"
 )
 
 const (
@@ -193,15 +194,22 @@ func (s *Server) handleUserAuth(w http.ResponseWriter, r *http.Request) error {
         return fmt.Errorf("failed to authenticate.")
     }
 
-    authStatus, err := s.store.AuthUser(username, password)
+    authenticated, user, err := s.store.AuthUser(username, password)
     if err != nil {
         return err
     }
 
-    if authStatus {
-        // Create JWT
+    if !authenticated {
+        return fmt.Errorf("failed to authenticate.")
     }
 
+    tokenString, err := s.createJWT(user)
+    if err != nil {
+        return fmt.Errorf("failed to authenticate.")
+    }
+
+    response := LoginResponse{Id: user.Id, Token: tokenString}
+    s.WriteJSON(w, http.StatusOK, response)
     return nil
 }
 

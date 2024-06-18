@@ -27,7 +27,10 @@ func (s *Server) runServer() {
     mux := http.NewServeMux()
     s.handleRoutes(mux)
     c := cors.New(cors.Options{
-        AllowedOrigins: []string{"http://localhost:3000"},
+        AllowedOrigins: []string{
+            "http://localhost:3000",
+        },
+        AllowCredentials: true,
     })
     handler := c.Handler(mux)
 

@@ -38,3 +38,8 @@ type CreateCommentRequest struct {
     CommunityId  int    `json:"communityId"`
     ParentPostId int    `json:"parentPostId"`
 }
+
+type LoginResponse struct {
+    Id    int    `json:"id"`
+    Token string `json:"jwtToken"`
+}
