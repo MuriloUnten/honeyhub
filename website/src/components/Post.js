@@ -7,6 +7,11 @@ import share from '../assets/share.png'
 import communityIcon from '../assets/utfpr-icon-placeholder.jpg'
 
 const Post = (props) => {
+    // useEffect( () => {
+    //     const fetchPost = async () => {
+    //         const response = await fetch();
+    //     } 
+    // }, [])
     return (
         //<div className='w-full h-96 bg-black2 rounded-3xl text-white px-8 py-2'>
         <Link to='/view-post'>
@@ -29,8 +34,8 @@ const Post = (props) => {
                 </Link>
             </div>
             <div className='h-56'>
-                <img src={beach} className='max-h-52'></img>
-            </div>
+          <img src={beach} className='max-h-52'></img>
+        </div>
             <div className='flex justify-between mb-1'>
                 <div className='bg-black3 flex items-center px-3 py-2 rounded-xl'>
                     <img src={upArrow} className='w-5 rotate-180 mr-2'></img>

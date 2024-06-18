@@ -18,7 +18,7 @@ const LeftBar = () => {
               </Link>
             </li>
             <li className="mt-6 font-bold text-2xl text-white hover:underline cursor-pointer flex items-center">
-              <Link to="/profile">
+              <Link to="/profile/1">
                 <div className="flex items-center">
                   <img src={profile} className="w-8 h-8 mr-2" alt="Profile"></img>
                   <div>Profile</div>
