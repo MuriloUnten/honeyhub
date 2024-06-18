@@ -31,3 +31,10 @@ type CreatePostRequest struct {
     UserId      int            `json:"userId"`
     CommunityId int            `json:"communityId"`
 }
+
+type CreateCommentRequest struct {
+    Body         string `json:"body"`
+    UserId       int    `json:"userId"`
+    CommunityId  int    `json:"communityId"`
+    ParentPostId int    `json:"parentPostId"`
+}
