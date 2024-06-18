@@ -8,11 +8,11 @@ type CreateUserRequest struct {
 
 type GetPostRequest struct {
     Title string `json:"title"`
-    Body string  `json:"body"`
+    Body  string `json:"body"`
 }
 
 type GetUserRequest struct {
-    Id int         `json:"id"`
+    Id       int    `json:"id"`
     Username string `json:"username"`
 }
 
@@ -21,7 +21,13 @@ type GetCommunityRequest struct {
 }
 
 type GetPostsRequest struct {
-    Post GetPostRequest `json:"post"`
-    User GetUserRequest `json:"user"`
+    Post      GetPostRequest      `json:"post"`
+    User      GetUserRequest      `json:"user"`
     Community GetCommunityRequest `json:"community"`
+}
+
+type CreatePostRequest struct {
+    Post        GetPostRequest `json:"post"`
+    UserId      int            `json:"userId"`
+    CommunityId int            `json:"communityId"`
 }

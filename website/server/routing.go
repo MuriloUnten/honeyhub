@@ -59,6 +59,7 @@ func (s *Server) handleRoutes(mux *http.ServeMux) {
     mux.HandleFunc("GET /api/posts/user/{id}", s.makeHTTPHandlerFunc(s.handleGetUserPostsByUserId))
     mux.HandleFunc("GET /api/community/posts/{id}", s.makeHTTPHandlerFunc(s.handleGetCommunityPosts))
     mux.HandleFunc("GET /api/auth", s.makeHTTPHandlerFunc(s.handleUserAuth))
+    mux.HandleFunc("POST /api/create-post", s.makeHTTPHandlerFunc(s.handleCreatePost))
 }
 
 func (s *Server) handleGetUserById(w http.ResponseWriter, r *http.Request) error {
@@ -164,6 +165,24 @@ func (s *Server) handleGetCommunityPosts(w http.ResponseWriter, r *http.Request)
     }
 
     s.WriteJSON(w, http.StatusOK, postsData)
+    return nil
+}
+
+func (s *Server) handleCreatePost(w http.ResponseWriter, r *http.Request) error {
+    var postData CreatePostRequest
+    err := json.NewDecoder(r.Body).Decode(&postData)
+    if err != nil {
+        log.Println(err)
+        return err
+    }
+
+    post, err := s.store.CreatePost(&postData)
+    if err != nil {
+        log.Println(err)
+        return err
+    }
+
+    s.WriteJSON(w, http.StatusOK, post)
     return nil
 }
 
