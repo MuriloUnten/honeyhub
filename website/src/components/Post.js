@@ -15,7 +15,7 @@ const Post = (props) => {
     console.log(props)
     return (
         //<div className='w-full h-96 bg-black2 rounded-3xl text-white px-8 py-2'>
-        <Link to='/view-post'>
+        <Link to={'/view-post/' + props.post.id}>
         <div className='w-full h-auto bg-black2 rounded-3xl px-8 py-2 mb-4'>
             <div>
                 <Link to='/community' className='w-full flex my-2 items-center mb-2'>
@@ -30,7 +30,7 @@ const Post = (props) => {
                 </Link>
             </div>
             <div className='font-bold text-2xl text-white h-10 mb-1'>
-                <Link to='/view-post'> 
+                <Link to={'/view-post/' + props.post.id}> 
                     {props.post.title}
                 </Link>
             </div>

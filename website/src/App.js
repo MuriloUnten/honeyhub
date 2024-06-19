@@ -28,7 +28,9 @@ const router = createBrowserRouter(
         <Route path="/profile" element={<Profile />}>
             <Route path=":id" element={<Profile />} />
         </Route>
-        <Route path="/view-post" element={<ViewPost />} />
+        <Route path="/view-post" element={<ViewPost />}>
+            <Route path=":id" element={<ViewPost />} />
+        </Route>
         </>
     )
 );
