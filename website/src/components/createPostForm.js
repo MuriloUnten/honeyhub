@@ -8,12 +8,22 @@ const CreatePostForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        var idLocalStorage = localStorage.getItem("userId")
+
+        if (idLocalStorage == null) {
+            console.log("Couldn't find id")
+            idLocalStorage = 1
+        } else {
+            idLocalStorage = parseInt(idLocalStorage)
+            console.log("Login id", idLocalStorage)
+        }
+
         const postData = {
             post: {
                 title: title,
                 Body: body
             },
-            userId: 1,
+            userId: idLocalStorage,
             communityId: 1
         };
 
