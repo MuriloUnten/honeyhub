@@ -8,11 +8,11 @@ const LogInForm = () => {
 
                 <div className="mb-8">
                     <div className="text-white mb-1 ml-2 text-xl">Email</div>
-                    <input name="email" type="text" placeholder="Enter your email" className="w-full h-11 rounded-3xl p-5"></input>
+                    <input name="email" type="text" placeholder="Enter your email" className="w-full h-11 rounded-3xl p-5" required></input>
                 </div>
                 <div className="mb-8">
                     <div className="text-white mb-1 ml-2 text-xl">Password</div>
-                    <input name="password" type="password" placeholder="Enter your password" className="w-full h-11 rounded-3xl p-5"></input>
+                    <input name="password" type="password" placeholder="Enter your password" className="w-full h-11 rounded-3xl p-5" required></input>
                 </div>
                <div className="">
                     <button type="submit" className="bg-main text-lg w-full h-11 rounded-3xl mb-2">Log In</button>
