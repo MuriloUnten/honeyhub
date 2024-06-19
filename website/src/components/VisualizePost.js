@@ -121,10 +121,9 @@ const VisualizePost = () => {
             const postData = await response.json();
             console.log(postData)
             setPost(postData);
-            setUpVotes(postData.upVotes); // Assuming upVotes is a field in your post data
+            setUpVotes(postData.upVotes);
         } catch (error) {
             console.error('Error fetching post:', error);
-            // Handle error as needed, e.g., show an error message
         }
     };
 

@@ -12,6 +12,7 @@ const Comments = () => {
     const [upVoted, setUpVoted] = useState(false);
     const [downVoted, setDownVoted] = useState(false);
     const [originalState, setOriginal] = useState(true);
+    const [comment, setComment] = useState([])
 
     const incrementVotes = () => {
         if (originalState) {
@@ -44,6 +45,18 @@ const Comments = () => {
             }
         }
     };
+
+    const fetchCommentData = async () => {
+      try {
+        const response = await fetch(BASE_URL + '/post/' + id + 'comments')
+        if (!response.ok) {
+            throw new Error('Failed to fetch post data');
+        }
+        const postData = await response.json();
+      } catch (error) {
+          console.error('Error fetching post:', error);
+      }
+    }
 
     return (
         <div className="w-full bg-black2 rounded-3xl px-8 py-2 mb-4">
