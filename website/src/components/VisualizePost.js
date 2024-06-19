@@ -94,39 +94,6 @@ const VisualizePost = () => {
     const [originalState, setOriginal] = useState(true);
     const {id} = useParams()
 
-
-    useEffect(() => {
-      setPost({
-        post: {
-          title: "Titulo",
-          body:"body"
-        },
-        user: {
-          name: "Thomas"
-        },
-        community: {
-          name: "Arch Linux"
-        },
-      })
-      fetchPostData();
-    }, []);
-
-    const fetchPostData = async () => {
-        try {
-            console.log("id", id)
-            const response = await fetch(BASE_URL + '/post/' + id); // Example endpoint
-            if (!response.ok) {
-                throw new Error('Failed to fetch post data');
-            }
-            const postData = await response.json();
-            console.log(postData)
-            setPost(postData);
-            setUpVotes(postData.upVotes);
-        } catch (error) {
-            console.error('Error fetching post:', error);
-        }
-    };
-
     const incrementVotes = () => {
         if (originalState) {
             setUpVotes(upVotes + 1);
@@ -159,16 +126,50 @@ const VisualizePost = () => {
         }
     };
 
+    useEffect(() => {
+        setPost({
+            post: {
+                title: "Titulo",
+                body:"body"
+            },
+            user: {
+                name: "Thomas"
+            },
+            community: {
+                name: "Arch Linux"
+            },
+        })
+        fetchPostData();
+    }, []);
+
+    const fetchPostData = async () => {
+        try {
+            console.log("id", id)
+            const response = await fetch(BASE_URL + '/post/' + id); // Example endpoint
+            if (!response.ok) {
+                throw new Error('Failed to fetch post data');
+            }
+            const postData = await response.json();
+            console.log(postData)
+            setPost(postData);
+            setUpVotes(postData.upVotes);
+        } catch (error) {
+            console.error('Error fetching post:', error);
+        }
+    };
+
+
     if (!post) {
         return <div className='text-white my-4'>Loading...</div>; // Placeholder while loading data
     }
+
 
     return (
       <div className="w-full bg-black2 rounded-3xl px-8 py-2 mb-4">
         <div className="mt-8 h-16 flex items-center">
           <Link to="/"><img src={leftArrow} className="max-h-16"></img></Link>
-          <Link to="/profile"><img src={profile} className="max-h-16 ml-8"></img></Link>     
-          <Link to="/profile"><div className="text-white font-bold text-xl ml-4">{post.user.name}</div></Link>          
+          <Link to={"/profile/" + post.user.id}><img src={profile} className="max-h-16 ml-8"></img></Link>     
+          <Link to={"/profile/" + post.user.id}><div className="text-white font-bold text-xl ml-4">{post.user.username}</div></Link>          
         </div>
         <div className=' text-2xl font-bold text-white h-10 mb-1 mt-8'>
           {post.post.title}

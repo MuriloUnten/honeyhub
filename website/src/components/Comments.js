@@ -47,6 +47,7 @@ const Comments = ({comment}) => {
         }
     };
 
+
     return (
         <div className="w-full bg-black2 rounded-3xl px-8 py-2 mb-4">
             <div className="mt-2 h-16 flex items-center">
