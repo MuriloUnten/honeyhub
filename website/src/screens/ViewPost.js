@@ -10,6 +10,8 @@ import { BASE_URL } from "../backend_url";
 const ViewPost = () => {
 
   const [comments, setComments] = useState([]);
+  const [communityId, setCommunityId] = useState(0);
+  const [postId, setPostId] = useState(0);
     const {id} = useParams()
 
   useEffect(() => {
@@ -18,13 +20,19 @@ const ViewPost = () => {
       .then(data => setComments(data))
       .catch(error => console.error('Error fetching comments:', error));
   }, []);
+  useEffect(() => {
+    if (comments[0]) {
+      setCommunityId(comments[0].community.id)
+      setPostId(parseInt(id))
+    }
+  }, [comments])
 
   return (
     <div className="bg-black1 w-h-full flex p-6 justify-around">
       <LeftBar></LeftBar>
       <div className="w-6/12 rounded-3xl">
         <VisualizePost></VisualizePost>
-        <CreateCommentForm></CreateCommentForm>
+        <CreateCommentForm communityId={communityId} parentPostId={postId}></CreateCommentForm>
         <CommentList comments={comments}></CommentList>
       </div>
       <RightBar></RightBar>

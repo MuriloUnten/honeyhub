@@ -47,18 +47,6 @@ const Comments = ({comment}) => {
         }
     };
 
-    // const fetchCommentData = async () => {
-    //   try {
-    //     const response = await fetch(BASE_URL + '/post/' + id + 'comments')
-    //     if (!response.ok) {
-    //         throw new Error('Failed to fetch post data');
-    //     }
-    //     const postData = await response.json();
-    //   } catch (error) {
-    //       console.error('Error fetching post:', error);
-    //   }
-    // }
-
     return (
         <div className="w-full bg-black2 rounded-3xl px-8 py-2 mb-4">
             <div className="mt-2 h-16 flex items-center">
