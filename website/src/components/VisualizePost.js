@@ -9,14 +9,41 @@ import upArrow from '../assets/upArrow.png';
 
 const VisualizePost = () => {
   const [upVotes, setUpVotes] = useState(182);
+    const [upVoted, setUpVoted] = useState(false);
+    const [downVoted, setDownVoted] = useState(false);
+    const [originalState, setOriginal] = useState(true);
 
-  const incrementVotes = () => {
-    setUpVotes(upVotes + 1);
-  };
+    const incrementVotes = () => {
+        if (originalState) {
+            setUpVotes(upVotes + 1);
+            setUpVoted(true);
+            setDownVoted(false);
+            setOriginal(false);
+        }
+        else{
+            if(downVoted){
+                setUpVotes(upVotes + 1);
+                setUpVoted(false);
+                setOriginal(true);
+            }
+        }
+    };
 
-  const decreaseVotes = () => {
-    setUpVotes(upVotes - 1);
-  }
+    const decreaseVotes = () => {
+        if (originalState) {
+            setUpVotes(upVotes - 1);
+            setUpVoted(false);
+            setDownVoted(true);
+            setOriginal(false);
+        }
+        else{
+            if(upVoted){
+                setUpVotes(upVotes - 1);
+                setUpVoted(false);
+                setOriginal(true);
+            }
+        }
+    };
 
   return (
     <div className="w-full bg-black2 rounded-3xl px-8 py-2 mb-4">
