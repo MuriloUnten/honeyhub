@@ -189,22 +189,24 @@ func (s *Server) handleCreateComment(w http.ResponseWriter, r *http.Request) err
 }
 
 func (s *Server) handleUserAuth(w http.ResponseWriter, r *http.Request) error {
-    username, password, ok := r.BasicAuth()
+    email, password, ok := r.BasicAuth()
     if !ok {
         return fmt.Errorf("failed to authenticate.")
     }
 
-    authenticated, user, err := s.store.AuthUser(username, password)
+    authenticated, user, err := s.store.AuthUser(email, password)
     if err != nil {
         return err
     }
 
     if !authenticated {
+        log.Println(err)
         return fmt.Errorf("failed to authenticate.")
     }
 
     tokenString, err := s.createJWT(user)
     if err != nil {
+        log.Println(err)
         return fmt.Errorf("failed to authenticate.")
     }
 

@@ -2,6 +2,7 @@ import beeHiveLogIn from "../assets/beeHiveLogIn.png";
 import LogInForm from "../components/LogInForm";
 import { redirect } from "react-router-dom";
 import { BASE_URL } from "../backend_url";
+import { encode } from "base-64";
 
 const LogIn = () => {
     return (
@@ -27,12 +28,14 @@ export const logInAction = async ({ request }) => {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Basic " + `${submission.email}:${submission.password}`
+            "Authorization": "Basic " + encode(`${submission.email}:${submission.password}`),
         },
     })
     const loginResponse = await response.json()
-    localStorage.setItem("jwt-token", loginResponse.token)
+    localStorage.setItem("jwt-token", loginResponse.jwtToken)
+    localStorage.setItem("userId", loginResponse.id)
     console.log(localStorage.getItem("jwt-token"))
+    console.log(localStorage.getItem("userId"))
 
     // if authenticated then redirect to feed
     // else show error message

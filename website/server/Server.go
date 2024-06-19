@@ -31,6 +31,7 @@ func (s *Server) runServer() {
             "http://localhost:3000",
         },
         AllowCredentials: true,
+        AllowedHeaders: []string {"*"},
     })
     handler := c.Handler(mux)
 

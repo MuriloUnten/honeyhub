@@ -183,15 +183,15 @@ func (s *MySQLStorage) CreateComment(c *CreateCommentRequest) (*Post, error) {
     return comment, nil
 }
 
-func (s *MySQLStorage) AuthUser(username string, password string) (bool, *User, error) {
+func (s *MySQLStorage) AuthUser(email string, password string) (bool, *User, error) {
     q := `
-    SELECT id, email, username, FROM app_user
-    WHERE username = ?
-    AND password = ?;
+    SELECT id, email, username FROM app_user
+    WHERE email = ?
+    AND password_hash = ?;
     `
 
     user := new(User)
-    row := s.db.QueryRow(q, username, password)
+    row := s.db.QueryRow(q, email, password)
     if err := row.Scan(&user.Id, &user.Email, &user.Username); err != nil {
         return false, nil, err
     }
