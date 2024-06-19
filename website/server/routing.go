@@ -170,6 +170,17 @@ func (s *Server) handleGetPostById(w http.ResponseWriter, r *http.Request) error
 }
 
 func (s *Server) handleGetComments(w http.ResponseWriter, r *http.Request) error {
+    id, err := s.getId(r)
+    if err != nil {
+        return err
+    }
+
+    comments, err := s.store.GetPostComments(id)
+    if err != nil {
+        return err
+    }
+
+    s.WriteJSON(w, http.StatusOK, comments)
     return nil
 }
 

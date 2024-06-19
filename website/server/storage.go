@@ -21,9 +21,9 @@ type Storage interface {
     CreatePost(*CreatePostRequest) (*Post, error)
     CreateComment(*CreateCommentRequest) (*Post, error)
     GetPostById(int) (*GetPostsRequest, error)
+    GetPostComments(int) ([]*GetPostsRequest, error)
     /*
     CreateComment(*Comment) error
-    GetPostComments(int) ([]*Post, error)
     */
 }
 
@@ -104,6 +104,22 @@ func (s *MySQLStorage) GetPostById(id int) (*GetPostsRequest, error) {
     }
 
     return postsData[0], nil
+}
+
+func (s * MySQLStorage) GetPostComments(id int) ([]*GetPostsRequest, error) {
+    q := `
+    SELECT post.id, title, body, app_user.username, app_user.id, community.community_name
+    FROM post JOIN community ON post.community_id = community.id
+    JOIN app_user ON post.user_id = app_user.id
+    WHERE post.parent_post_id = ?;
+    `
+    
+    comments, err := s.getPosts(q, id)
+    if err != nil {
+        return nil, err
+    }
+
+    return comments, nil
 }
 
 func (s * MySQLStorage) GetUserPostsByUserId(id int) ([]*GetPostsRequest, error) {
