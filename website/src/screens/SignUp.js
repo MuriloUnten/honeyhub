@@ -36,6 +36,7 @@ export const signUpAction = async ({request}) => {
 
     console.log(response)
     const jsonResponse = await response.json()
-    console.log(jsonResponse)
-    return redirect(`/profile/${jsonResponse.id}`)
+    localStorage.setItem("jwt-token", jsonResponse.token)
+    localStorage.setItem("userId", jsonResponse.user.id)
+    return redirect(`/profile/${jsonResponse.user.id}`)
 }

@@ -44,3 +44,8 @@ type LoginResponse struct {
     Id    int    `json:"id"`
     Token string `json:"jwtToken"`
 }
+
+type SignupResponse struct {
+    User  User `json:"user"`
+    Token string `json:"jwtToken"`
+}

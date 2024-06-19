@@ -98,10 +98,10 @@ func (s *Server) handleCreateAccount(w http.ResponseWriter, r *http.Request) err
         log.Println(err)
         return err
     }
-
     fmt.Println("token: " + tokenString)
+    response := SignupResponse{User: user, Token: tokenString}
     
-    return s.WriteJSON(w, http.StatusOK, user)
+    return s.WriteJSON(w, http.StatusOK, response)
 }
 
 func (s *Server) handleGetUserPostsByUserId(w http.ResponseWriter, r *http.Request) error {

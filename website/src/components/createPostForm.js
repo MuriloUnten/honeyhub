@@ -14,6 +14,7 @@ const CreatePostForm = () => {
             console.log("Couldn't find id")
             idLocalStorage = 1
         } else {
+            console.log("Login id as is", idLocalStorage)
             idLocalStorage = parseInt(idLocalStorage)
             console.log("Login id", idLocalStorage)
         }

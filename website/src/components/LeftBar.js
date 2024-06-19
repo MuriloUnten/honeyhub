@@ -4,6 +4,7 @@ import home from "../assets/home.png";
 import profile from "../assets/profile.png";
 
 const LeftBar = () => {
+  const userId = localStorage.getItem("userId")
   return (
     <div className="w-2/12 h-[95vh] bg-black2 rounded-3xl flex flex-col justify-between">
       <div>
@@ -18,7 +19,7 @@ const LeftBar = () => {
               </Link>
             </li>
             <li className="mt-6 font-bold text-2xl text-white hover:underline cursor-pointer flex items-center">
-              <Link to="/profile/1">
+              <Link to={"/profile/" + userId} >
                 <div className="flex items-center">
                   <img src={profile} className="w-8 h-8 mr-2" alt="Profile"></img>
                   <div>Profile</div>
