@@ -61,9 +61,8 @@ const Comments = () => {
                         <div className='mr-2 text-white'>{upVotes}</div>
                         <img src={upArrow} className='w-5' alt="Downvote" onClick={decreaseVotes}></img>
                     </div>  
-                    <div className='w-20 bg-black3 flex items-center justify-around px-2 py-2 rounded-xl'>
-                        <img src={comment} className='w-6 mr-2' alt="Comment"></img>
-                        <div className='text-white'>12</div>
+                    <div className='w-12 bg-black3 flex items-center justify-around px-2 py-2 rounded-xl'>
+                        <img src={comment} className='w-6 mx-1' alt="Comment"></img>
                     </div>
                 </div>
             </div>
