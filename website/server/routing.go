@@ -27,14 +27,16 @@ func (s *Server) handleRoutes(mux *http.ServeMux) {
         fmt.Fprintf(w, "hello world\n")
     })
 
-    mux.HandleFunc("GET /api/user/{id}", s.makeHTTPHandlerFunc(s.handleGetUserById))
-    mux.HandleFunc("GET /api/profile-picture/{id}", s.makeHTTPHandlerFunc(s.handleGetProfilePictureById))
-    mux.HandleFunc("GET /api/user/feed/{id}", s.makeHTTPHandlerFunc(s.handleGetUserFeedById))
+    mux.HandleFunc("GET  /api/user/{id}", s.makeHTTPHandlerFunc(s.handleGetUserById))
+    mux.HandleFunc("GET  /api/profile-picture/{id}", s.makeHTTPHandlerFunc(s.handleGetProfilePictureById))
+    mux.HandleFunc("GET  /api/user/feed/{id}", s.makeHTTPHandlerFunc(s.handleGetUserFeedById))
     mux.HandleFunc("POST /api/create-account", s.makeHTTPHandlerFunc(s.handleCreateAccount))
-    mux.HandleFunc("GET /api/posts/user/{id}", s.makeHTTPHandlerFunc(s.handleGetUserPostsByUserId))
-    mux.HandleFunc("GET /api/community/posts/{id}", s.makeHTTPHandlerFunc(s.handleGetCommunityPosts))
-    mux.HandleFunc("GET /api/auth", s.makeHTTPHandlerFunc(s.handleUserAuth))
+    mux.HandleFunc("GET  /api/posts/user/{id}", s.makeHTTPHandlerFunc(s.handleGetUserPostsByUserId))
+    mux.HandleFunc("GET  /api/community/posts/{id}", s.makeHTTPHandlerFunc(s.handleGetCommunityPosts))
+    mux.HandleFunc("GET  /api/auth", s.makeHTTPHandlerFunc(s.handleUserAuth))
+    mux.HandleFunc("GET  /api/post/{id}", s.makeHTTPHandlerFunc(s.handleCreatePost))
     mux.HandleFunc("POST /api/post", s.makeHTTPHandlerFunc(s.handleCreatePost))
+    mux.HandleFunc("GET  /api/post/{id}/comments", s.makeHTTPHandlerFunc(s.handleGetComments))
     mux.HandleFunc("POST /api/comment", s.makeHTTPHandlerFunc(s.handleCreateComment))
 }
 
@@ -149,6 +151,25 @@ func (s *Server) handleGetCommunityPosts(w http.ResponseWriter, r *http.Request)
     }
 
     s.WriteJSON(w, http.StatusOK, postsData)
+    return nil
+}
+
+func (s *Server) handleGetPostById(w http.ResponseWriter, r *http.Request) error {
+    id, err := s.getId(r)
+    if err != nil {
+        return err
+    }
+
+    post, err := s.store.GetPostById(id)
+    if err != nil {
+        return err
+    }
+
+    s.WriteJSON(w, http.StatusOK, post)
+    return nil
+}
+
+func (s *Server) handleGetComments(w http.ResponseWriter, r *http.Request) error {
     return nil
 }
 

@@ -20,8 +20,8 @@ type Storage interface {
     AuthUser(string, string) (bool, *User, error)
     CreatePost(*CreatePostRequest) (*Post, error)
     CreateComment(*CreateCommentRequest) (*Post, error)
+    GetPostById(int) (*GetPostsRequest, error)
     /*
-    GetPostById(int) (*Post, error)
     CreateComment(*Comment) error
     GetPostComments(int) ([]*Post, error)
     */
@@ -91,9 +91,24 @@ func (s *MySQLStorage) GetProfilePicPathById(id int) (string, error) {
     return path, nil
 }
 
+func (s *MySQLStorage) GetPostById(id int) (*GetPostsRequest, error) {
+    q := `
+    SELECT post.id, title, body, app_user.username, app_user.id, community.community_name
+    FROM post JOIN community ON post.community_id = community.id
+    JOIN app_user ON post.user_id = app_user.id
+    WHERE post.id = ?;
+    `
+    postsData, err := s.getPosts(q, id)
+    if err != nil {
+        return nil, err
+    }
+
+    return postsData[0], nil
+}
+
 func (s * MySQLStorage) GetUserPostsByUserId(id int) ([]*GetPostsRequest, error) {
     q := `
-    SELECT title, body, app_user.username, app_user.id, community.community_name
+    SELECT post.id, title, body, app_user.username, app_user.id, community.community_name
     FROM post JOIN community ON post.community_id = community.id
     JOIN app_user ON post.user_id = app_user.id
     WHERE user_id = ? AND post_type_id = 1;
@@ -108,7 +123,7 @@ func (s * MySQLStorage) GetUserPostsByUserId(id int) ([]*GetPostsRequest, error)
 
 func (s *MySQLStorage) GetUserFeed(id int) ([]*GetPostsRequest, error) {
     q := `
-    SELECT title, body, app_user.username, app_user.id, community.community_name
+    SELECT post.id, title, body, app_user.username, app_user.id, community.community_name
     FROM post JOIN community ON post.community_id = community.id
     JOIN app_user ON post.user_id = app_user.id
     WHERE community_id IN
@@ -126,7 +141,7 @@ func (s *MySQLStorage) GetUserFeed(id int) ([]*GetPostsRequest, error) {
 
 func (s *MySQLStorage) GetCommunityPosts(id int) ([]*GetPostsRequest, error) {
     q := `
-    SELECT title, body, app_user.username, app_user.id, community.community_name
+    SELECT post.id, title, body, app_user.username, app_user.id, community.community_name
     FROM post JOIN community ON post.community_id = community.id
     JOIN app_user ON post.user_id = app_user.id
     WHERE community.id = ?
@@ -210,6 +225,7 @@ func (s *MySQLStorage) getPosts(query string, v ... any) ([]*GetPostsRequest, er
     for rows.Next() {
         p := new(GetPostsRequest)
         err := rows.Scan(
+            &p.Post.Id,
             &p.Post.Title,
             &p.Post.Body,
             &p.User.Username,
