@@ -83,6 +83,20 @@ const ViewProfile = () => {
           >
             Comments
           </li>
+        </ul>
+      </div>
+      <div className="mt-8 mb-4 border-b border-white"></div>
+      <div className="w-full bg-black2 rounded-3xl px-8 py-2 mb-4">
+        {renderComponent()}
+      </div>
+    </div>
+  );
+};
+
+export default ViewProfile;
+
+/*
+ *
           <li
             className="font-bold text-2xl text-white hover:underline cursor-pointer hover:text-main"
             onClick={() => setActiveComponent("Upvoted")}
@@ -95,14 +109,5 @@ const ViewProfile = () => {
           >
             Downvoted
           </li>
-        </ul>
-      </div>
-      <div className="mt-8 mb-4 border-b border-white"></div>
-      <div className="w-full bg-black2 rounded-3xl px-8 py-2 mb-4">
-        {renderComponent()}
-      </div>
-    </div>
-  );
-};
-
-export default ViewProfile;
+ *
+ */
