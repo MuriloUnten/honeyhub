@@ -1,12 +1,23 @@
-import leftArrow from "../assets/leftArrow.png"
+import React, { useState } from 'react';
+import leftArrow from "../assets/leftArrow.png";
 import { Link } from "react-router-dom";
 import profile from "../assets/profile.png";
 import beach from '../assets/beach.jpg';
-import comment from '../assets/comment.png'
-import share from '../assets/share.png'
-import upArrow from '../assets/upArrow.png'
+import comment from '../assets/comment.png';
+import share from '../assets/share.png';
+import upArrow from '../assets/upArrow.png';
 
 const VisualizePost = () => {
+  const [upVotes, setUpVotes] = useState(182);
+
+  const incrementVotes = () => {
+    setUpVotes(upVotes + 1);
+  };
+
+  const decreaseVotes = () => {
+    setUpVotes(upVotes - 1);
+  }
+
   return (
     <div className="w-full bg-black2 rounded-3xl px-8 py-2 mb-4">
       <div className="mt-8 h-16 flex items-center">
@@ -22,9 +33,9 @@ const VisualizePost = () => {
       </div>
       <div className='flex justify-between mt-6 mb-4'>
         <div className='bg-black3 flex items-center px-3 py-2 rounded-xl'>
-            <img src={upArrow} className='w-5 rotate-180 mr-2'></img>
-            <div className='mr-2 text-white'>182</div>
-            <img src={upArrow} className='w-5'></img>
+            <img src={upArrow} className='w-5 rotate-180 mr-2'onClick={incrementVotes}></img>
+            <div className='mr-2 text-white'>{upVotes}</div>
+            <img src={upArrow} className='w-5 cursor-pointer'onClick={decreaseVotes}></img>
         </div>
         <div className='flex justify-end'>
           <div className='w-20 bg-black3 flex items-center justify-around px-2 py-2 rounded-xl mr-4'>
