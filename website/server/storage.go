@@ -93,7 +93,7 @@ func (s *MySQLStorage) GetProfilePicPathById(id int) (string, error) {
 
 func (s *MySQLStorage) GetPostById(id int) (*GetPostsRequest, error) {
     q := `
-    SELECT post.id, title, body, app_user.username, app_user.id, community.community_name
+    SELECT post.id, title, body, app_user.username, app_user.id, community.id, community.community_name
     FROM post JOIN community ON post.community_id = community.id
     JOIN app_user ON post.user_id = app_user.id
     WHERE post.id = ?;
@@ -108,7 +108,7 @@ func (s *MySQLStorage) GetPostById(id int) (*GetPostsRequest, error) {
 
 func (s * MySQLStorage) GetPostComments(id int) ([]*GetPostsRequest, error) {
     q := `
-    SELECT post.id, body, app_user.username, app_user.id, community.community_name
+    SELECT post.id, body, app_user.username, app_user.id, community.id, community.community_name
     FROM post JOIN community ON post.community_id = community.id
     JOIN app_user ON post.user_id = app_user.id
     WHERE post.parent_post_id = ?;
@@ -124,7 +124,7 @@ func (s * MySQLStorage) GetPostComments(id int) ([]*GetPostsRequest, error) {
 
 func (s * MySQLStorage) GetUserPostsByUserId(id int) ([]*GetPostsRequest, error) {
     q := `
-    SELECT post.id, title, body, app_user.username, app_user.id, community.community_name
+    SELECT post.id, title, body, app_user.username, app_user.id, community.id, community.community_name
     FROM post JOIN community ON post.community_id = community.id
     JOIN app_user ON post.user_id = app_user.id
     WHERE user_id = ? AND post_type_id = 1;
@@ -139,7 +139,7 @@ func (s * MySQLStorage) GetUserPostsByUserId(id int) ([]*GetPostsRequest, error)
 
 func (s *MySQLStorage) GetUserFeed(id int) ([]*GetPostsRequest, error) {
     q := `
-    SELECT post.id, title, body, app_user.username, app_user.id, community.community_name
+    SELECT post.id, title, body, app_user.username, app_user.id, community.id, community.community_name
     FROM post JOIN community ON post.community_id = community.id
     JOIN app_user ON post.user_id = app_user.id
     WHERE community_id IN
@@ -157,7 +157,7 @@ func (s *MySQLStorage) GetUserFeed(id int) ([]*GetPostsRequest, error) {
 
 func (s *MySQLStorage) GetCommunityPosts(id int) ([]*GetPostsRequest, error) {
     q := `
-    SELECT post.id, title, body, app_user.username, app_user.id, community.community_name
+    SELECT post.id, title, body, app_user.username, app_user.id, community.id, community.community_name
     FROM post JOIN community ON post.community_id = community.id
     JOIN app_user ON post.user_id = app_user.id
     WHERE community.id = ?
@@ -246,6 +246,7 @@ func (s *MySQLStorage) getPosts(query string, v ... any) ([]*GetPostsRequest, er
             &p.Post.Body,
             &p.User.Username,
             &p.User.Id,
+            &p.Community.Id,
             &p.Community.Name,
         )
         if err != nil {
@@ -274,6 +275,7 @@ func (s *MySQLStorage) getComments(query string, v ... any) ([]*GetPostsRequest,
             &p.Post.Body,
             &p.User.Username,
             &p.User.Id,
+            &p.Community.Id,
             &p.Community.Name,
         )
         if err != nil {

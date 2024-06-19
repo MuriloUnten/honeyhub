@@ -18,6 +18,7 @@ type GetUserRequest struct {
 }
 
 type GetCommunityRequest struct {
+    Id   int    `json:"id"`
     Name string `json:"name"`
 }
 
