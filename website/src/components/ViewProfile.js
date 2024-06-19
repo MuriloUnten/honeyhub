@@ -47,11 +47,11 @@ const ViewProfile = () => {
             case "Comments":
                 return <Comments />;
             case "Upvoted":
-                return <PostsSection />;
+                return <PostsSection posts={posts}/>;
             case "Downvoted":
-                return <PostsSection />;
+                return <PostsSection posts={posts}/>;
             default:
-                return <PostsSection />;
+                return <PostsSection posts={posts}/>;
         }
     };
 
