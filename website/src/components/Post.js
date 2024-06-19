@@ -12,6 +12,7 @@ const Post = (props) => {
     //         const response = await fetch();
     //     } 
     // }, [])
+    console.log(props)
     return (
         //<div className='w-full h-96 bg-black2 rounded-3xl text-white px-8 py-2'>
         <Link to='/view-post'>
@@ -38,7 +39,7 @@ const Post = (props) => {
             <div className='flex justify-between mb-1'>
                 <div className='bg-black3 flex items-center px-3 py-2 rounded-xl'>
                     <img src={upArrow} className='w-5 rotate-180 mr-2'></img>
-                    <div className='mr-2 text-white'>182</div>
+                    <div className='mr-2 text-white'>0</div>
                     <img src={upArrow} className='w-5'></img>
                 </div>
                 <div className='flex justify-end'>
