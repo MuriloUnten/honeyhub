@@ -1,6 +1,6 @@
 import {Link, Form} from "react-router-dom"
 
-const LogInForm = () => {
+const LogInForm = (props) => {
     return (
         <div className="m-auto">
             <Form method="post" action="/login">
@@ -14,6 +14,9 @@ const LogInForm = () => {
                     <div className="text-white mb-1 ml-2 text-xl">Password</div>
                     <input name="password" type="password" placeholder="Enter your password" className="w-full h-11 rounded-3xl p-5" required></input>
                 </div>
+
+                {props.error} {/* TODO Fix me*/}
+
                <div className="">
                     <button type="submit" className="bg-main text-lg w-full h-11 rounded-3xl mb-2">Log In</button>
                     <div className="flex">

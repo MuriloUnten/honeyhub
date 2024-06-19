@@ -1,14 +1,17 @@
 import beeHiveLogIn from "../assets/beeHiveLogIn.png";
 import LogInForm from "../components/LogInForm";
 import { redirect } from "react-router-dom";
+import { useState } from "react"
 import { BASE_URL } from "../backend_url";
 import { encode } from "base-64";
 
 const LogIn = () => {
+    const [errorMsg, setErrorMsg] = useState([]);
+
     return (
         <div className="flex h-screen">
             <div className="w-7/12 bg-black1 h-full flex">
-                <LogInForm />
+                <LogInForm error={errorMsg}/>
             </div>
             <img src={beeHiveLogIn} className="w-5/12 h-full"></img>
         </div>
@@ -21,9 +24,8 @@ export const logInAction = async ({ request }) => {
     const data = await request.formData();
     const submission = {
         email: data.get("email"),
-        password: data.get("password"), // TODO Fix me (terrible idea)
+        password: data.get("password"),
     };
-    console.log(submission); // TODO Remove me (must call backend here)
     const response = await fetch(BASE_URL + "/auth", {
         method: "GET",
         headers: {
@@ -37,7 +39,10 @@ export const logInAction = async ({ request }) => {
     console.log(localStorage.getItem("jwt-token"))
     console.log(localStorage.getItem("userId"))
 
-    // if authenticated then redirect to feed
-    // else show error message
-    return redirect("/feed");
+    if(loginResponse.error) {
+        // TODO implement me
+    }
+    else {
+        return redirect("/feed");
+    }
 };
