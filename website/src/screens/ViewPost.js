@@ -9,23 +9,25 @@ import { BASE_URL } from "../backend_url";
 
 const ViewPost = () => {
 
-  const [comments, setComments] = useState([]);
-  const [communityId, setCommunityId] = useState(0);
-  const [postId, setPostId] = useState(0);
+    const [comments, setComments] = useState([]);
+    const [communityId, setCommunityId] = useState(0);
+    const [postId, setPostId] = useState(0);
     const {id} = useParams()
 
-  useEffect(() => {
-    fetch(BASE_URL + '/post/' + id + '/comments') // Replace '/api/comments' with the actual endpoint
-      .then(response => response.json())
-      .then(data => setComments(data))
-      .catch(error => console.error('Error fetching comments:', error));
-  }, []);
-  useEffect(() => {
-    if (comments[0]) {
-      setCommunityId(comments[0].community.id)
-      setPostId(parseInt(id))
-    }
-  }, [comments])
+    useEffect(() => {
+        fetch(BASE_URL + '/post/' + id + '/comments')
+            .then(response => response.json())
+            .then(data => setComments(data))
+            .catch(error => console.error('Error fetching comments:', error));
+    }, []);
+
+    useEffect(() => {
+        if (comments[0]) {
+            setCommunityId(comments[0].community.id)
+            setPostId(parseInt(id))
+        }
+    }, [comments])
+
 
   return (
     <div className="bg-black1 w-h-full flex p-6 justify-around">
