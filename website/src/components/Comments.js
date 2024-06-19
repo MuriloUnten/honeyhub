@@ -58,14 +58,11 @@ const Comments = ({comment}) => {
             </div>
             <div className='flex justify-between mb-1'>
                 <div className='ml-auto flex items-center'>
-                    <div className='bg-black3 flex items-center px-3 py-2 rounded-xl mr-4'>
+                    <div className='bg-black3 flex items-center px-3 py-2 rounded-xl mr-2'>
                         <img src={upArrow} className='w-5 rotate-180 mr-2' alt="Upvote" onClick={incrementVotes}></img>
                         <div className='mr-2 text-white'>{upVotes}</div>
                         <img src={upArrow} className='w-5' alt="Downvote" onClick={decreaseVotes}></img>
                     </div>  
-                    <div className='w-12 bg-black3 flex items-center justify-around px-2 py-2 rounded-xl'>
-                        <img src={commentImg} className='w-6 mx-1' alt="Comment"></img>
-                    </div>
                 </div>
             </div>
         </div>
