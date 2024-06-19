@@ -108,13 +108,13 @@ func (s *MySQLStorage) GetPostById(id int) (*GetPostsRequest, error) {
 
 func (s * MySQLStorage) GetPostComments(id int) ([]*GetPostsRequest, error) {
     q := `
-    SELECT post.id, title, body, app_user.username, app_user.id, community.community_name
+    SELECT post.id, body, app_user.username, app_user.id, community.community_name
     FROM post JOIN community ON post.community_id = community.id
     JOIN app_user ON post.user_id = app_user.id
     WHERE post.parent_post_id = ?;
     `
     
-    comments, err := s.getPosts(q, id)
+    comments, err := s.getComments(q, id)
     if err != nil {
         return nil, err
     }
@@ -257,6 +257,35 @@ func (s *MySQLStorage) getPosts(query string, v ... any) ([]*GetPostsRequest, er
     }
 
     return postsData, nil
+}
+
+func (s *MySQLStorage) getComments(query string, v ... any) ([]*GetPostsRequest, error) {
+    rows, err := s.db.Query(query, v...)
+    if err != nil {
+        log.Println(err)
+        return nil, err
+    }
+
+    commentsData := make([]*GetPostsRequest, 0)
+    for rows.Next() {
+        p := new(GetPostsRequest)
+        err := rows.Scan(
+            &p.Post.Id,
+            &p.Post.Body,
+            &p.User.Username,
+            &p.User.Id,
+            &p.Community.Name,
+        )
+        if err != nil {
+            log.Println(err)
+            return nil, err
+        }
+        p.Post.Title = ""
+
+        commentsData = append(commentsData, p)
+    }
+
+    return commentsData, nil
 }
 
 func authenticate() (user string, password string) {
