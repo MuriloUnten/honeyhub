@@ -33,8 +33,7 @@ const Post = (props) => {
                     {props.post.title}
                 </Link>
             </div>
-            <div className='h-56'>
-          <img src={beach} className='max-h-52'></img>
+            <div className='h-8'>
         </div>
             <div className='flex justify-between mb-1'>
                 <div className='bg-black3 flex items-center px-3 py-2 rounded-xl'>

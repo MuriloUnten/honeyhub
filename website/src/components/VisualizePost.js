@@ -28,9 +28,6 @@ const VisualizePost = () => {
       <div className=' text-2xl text-white h-10 mb-1 mt-8'>
         This is the post title
       </div>
-      <div className='mt-8 flex justify-center'>
-        <img src={beach} className='max-h-96'></img>
-      </div>
       <div className='flex justify-between mt-6 mb-4'>
         <div className='bg-black3 flex items-center px-3 py-2 rounded-xl'>
             <img src={upArrow} className='w-5 rotate-180 mr-2'onClick={incrementVotes}></img>
