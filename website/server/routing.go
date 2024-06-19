@@ -34,7 +34,7 @@ func (s *Server) handleRoutes(mux *http.ServeMux) {
     mux.HandleFunc("GET /api/posts/user/{id}", s.makeHTTPHandlerFunc(s.handleGetUserPostsByUserId))
     mux.HandleFunc("GET /api/community/posts/{id}", s.makeHTTPHandlerFunc(s.handleGetCommunityPosts))
     mux.HandleFunc("GET /api/auth", s.makeHTTPHandlerFunc(s.handleUserAuth))
-    mux.HandleFunc("GET /api/post/{id}", s.makeHTTPHandlerFunc(s.handleCreatePost))
+    mux.HandleFunc("GET /api/post/{id}", s.makeHTTPHandlerFunc(s.handleGetPostById))
     mux.HandleFunc("POST /api/post", s.makeHTTPHandlerFunc(s.handleCreatePost))
     mux.HandleFunc("GET /api/post/{id}/comments", s.makeHTTPHandlerFunc(s.handleGetComments))
     mux.HandleFunc("POST /api/comment", s.makeHTTPHandlerFunc(s.handleCreateComment))
