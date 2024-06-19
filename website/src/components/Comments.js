@@ -8,7 +8,7 @@ import upArrow from '../assets/upArrow.png';
 import { useState } from "react";
 
 const Comments = () => {
-    const [upVotes, setUpVotes] = useState(182);
+    const [upVotes, setUpVotes] = useState(0);
     const [upVoted, setUpVoted] = useState(false);
     const [downVoted, setDownVoted] = useState(false);
     const [originalState, setOriginal] = useState(true);
